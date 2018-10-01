@@ -10,7 +10,7 @@ class Ping:
 
     @commands.command()
     async def ping(self):
-        await client.say('Pong')
+        await self.client.say('Pong')
 
 def setup(client):
     client.add_cog(Ping(client))

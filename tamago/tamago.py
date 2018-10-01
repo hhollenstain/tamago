@@ -5,28 +5,33 @@ Tamago BOT LIVES!
 import asyncio
 import random
 import os
-import json
 import argparse
 import discord
+import importlib
 import logging
 import coloredlogs
-import youtube_dl
+import sys
+from itertools import cycle
 from . import VERSION
 from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
-from itertools import cycle
-# from .lib.plugin_manager import PlugibotnManager
-# #from .lib.plugins.ping import Ping
-# from .lib.plugins.help import Help
+from .lib import plugin
+#from .lib import plugins
 
 
-PLAYERS = {}
-QUEUES = {}
+EXTENSIONS = [
+             '.lib.plugins.crypto',
+             '.lib.plugins.ping',
+             '.lib.plugins.fun',
+             '.lib.plugins.music',
+             '.lib.plugins.voice',
+             ]
+
 LOG = logging.getLogger(__name__)
 BOT_PREFIX = ("?", "!")
 client = Bot(command_prefix=BOT_PREFIX)
-client.remove_command('help')
+#client.remove_command('help')
 
 def parse_arguments():
     """parsing arguments.
@@ -49,34 +54,20 @@ async def change_status():
         await client.change_presence(game=discord.Game(name=current_status))
         await asyncio.sleep(15)
 
-@client.command(pass_context=True)
-async def help(ctx):
-    author = ctx.message.author
+# @client.command(pass_context=True)
+# async def help(ctx):
+#     author = ctx.message.author
+#
+#     embed = discord.Embed(
+#         colour = discord.Colour.orange()
+#     )
+#
+#     embed.set_author(name='Help')
+#     embed.add_field(name='!ping', value='Returns Pong!', inline=False)
+#     embed.add_field(name='!8ball', value='Shakes Magic 8ball for answer', inline=False)
+#
+#     await client.send_message(author, embed=embed)
 
-    embed = discord.Embed(
-        colour = discord.Colour.orange()
-    )
-
-    embed.set_author(name='Help')
-    embed.add_field(name='!ping', value='Returns Pong!', inline=False)
-    embed.add_field(name='!8ball', value='Shakes Magic 8ball for answer', inline=False)
-
-    await client.send_message(author, embed=embed)
-
-@client.command(name='8ball',
-                description="Answers a yes/no question.",
-                brief="Answers from the beyond.",
-                aliases=['eight_ball', 'eightball', '8-ball'],
-                pass_context=True)
-async def eight_ball(context):
-    possible_responses = [
-        'That is a resounding no',
-        'It is not looking likely',
-        'Too hard to tell',
-        'It is quite possible',
-        'Definitely',
-    ]
-    await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
 
 @client.event
 async def on_reaction_add(reaction, user):
@@ -116,19 +107,6 @@ async def on_ready():
     await client.change_presence(game=Game(name="with humans"))
     LOG.info("Logged in as " + client.user.name)
 
-@client.command()
-async def bitcoin():
-    url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
-
-@client.command()
-async def ping():
-    await client.say('Pong')
-
 async def list_servers():
     await client.wait_until_ready()
     while not client.is_closed:
@@ -163,101 +141,6 @@ async def tamago():
 
     await client.say(embed=embed)
 
-
-"""
-VOICE
-"""
-
-@client.command(pass_context=True)
-async def join(ctx):
-    msg_channel = ctx.message.channel
-    voice_channel = ctx.message.author.voice.voice_channel
-    try:
-        await client.join_voice_channel(voice_channel)
-    except Exception as e:
-        LOG.error(e)
-        await client.send_message(msg_channel, '{} DERP! you are currently not in a voice channel, unable to join'.format(ctx.message.author.mention))
-
-@client.command(pass_context=True)
-async def leave(ctx):
-    msg_channel = ctx.message.channel
-    server  = ctx.message.author.server
-    if client.is_voice_connected(server):
-        voice_client = client.voice_client_in(server)
-        await voice_client.disconnect()
-    else:
-        await client.send_message(msg_channel, '{} Tamago BOT is currently not in a voice channel, can\'t disconnect!'.format(ctx.message.author.mention))
-
-"""
-Music
-"""
-
-@client.command(pass_context=True)
-async def play(ctx, url):
-    opts = {
-     'default_search': 'auto',
-     'quiet': True,
-    }
-    before_options = '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2'
-
-    server = ctx.message.server
-    if server.id in PLAYERS:
-         LOG.info("stopping current player before second player starts")
-         PLAYERS[server.id].stop()
-
-    voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url,
-                                                   ytdl_options=opts,
-                                                   before_options=before_options,
-                                                   after=lambda: check_queue(server.id))
-    PLAYERS[server.id] = player
-    player.start()
-
-
-@client.command(pass_context=True)
-async def pause(ctx):
-    server_id = ctx.message.server.id
-    PLAYERS[server_id].pause()
-
-@client.command(pass_contex=True)
-async def resume(ctx):
-    server_id = ctx.message.server.id
-    PLAYERS[server_id].resume()
-
-@client.command(pass_contex=True)
-async def stop(ctx):
-    LOG.info('STOPING?')
-    server_id = ctx.message.server.id
-    PLAYERS[server_id].stop()
-
-@client.command(pass_context=True)
-async def queue(ctx, url):
-    opts = {
-     'default_search': 'auto',
-     'quiet': True,
-    }
-    before_options = '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2'
-
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url,
-                                                   ytdl_options=opts,
-                                                   before_options=before_options,
-                                                   after=lambda: check_queue(server.id))
-
-    if server.id in QUEUES:
-        QUEUES[server.id].append(player)
-    else:
-        QUEUES[server.id] = [player]
-    await client.say('Music has been queued')
-
-def check_queue(id):
-    if QUEUES[id] != []:
-        player = QUEUES[id].pop(0)
-        PLAYERS[id] = player
-        player.start()
-
-
 def main():
     """Entrypoint if called as an executable."""
     args = parse_arguments()
@@ -269,11 +152,15 @@ def main():
         l_level = logging.DEBUG
     else:
         l_level = logging.INFO
+
     logging.getLogger(__package__).setLevel(l_level)
     logging.getLogger('discord').setLevel(l_level)
     logging.getLogger('websockets.protocol').setLevel(l_level)
     LOG.info("LONG LIVE TAMAGO")
     TOKEN = os.getenv('TOKEN')
+
+    for extension in EXTENSIONS:
+        plugin.load(extension, client)
 
     client.loop.create_task(change_status())
     client.loop.create_task(list_servers())
