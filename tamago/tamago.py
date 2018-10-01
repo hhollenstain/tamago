@@ -5,20 +5,33 @@ Tamago BOT LIVES!
 import asyncio
 import random
 import os
-import json
 import argparse
 import discord
+import importlib
 import logging
 import coloredlogs
+import sys
+from itertools import cycle
 from . import VERSION
 from discord import Game
+from discord.ext import commands
 from discord.ext.commands import Bot
-from itertools import cycle
+from .lib import plugin
+#from .lib import plugins
+
+
+EXTENSIONS = [
+             '.lib.plugins.crypto',
+             '.lib.plugins.ping',
+             '.lib.plugins.fun',
+             '.lib.plugins.music',
+             '.lib.plugins.voice',
+             ]
 
 LOG = logging.getLogger(__name__)
 BOT_PREFIX = ("?", "!")
 client = Bot(command_prefix=BOT_PREFIX)
-client.remove_command('help')
+#client.remove_command('help')
 
 def parse_arguments():
     """parsing arguments.
@@ -41,39 +54,41 @@ async def change_status():
         await client.change_presence(game=discord.Game(name=current_status))
         await asyncio.sleep(15)
 
-@client.command(pass_context=True)
-async def help(ctx):
-    author = ctx.message.author
+# @client.command(pass_context=True)
+# async def help(ctx):
+#     author = ctx.message.author
+#
+#     embed = discord.Embed(
+#         colour = discord.Colour.orange()
+#     )
+#
+#     embed.set_author(name='Help')
+#     embed.add_field(name='!ping', value='Returns Pong!', inline=False)
+#     embed.add_field(name='!8ball', value='Shakes Magic 8ball for answer', inline=False)
+#
+#     await client.send_message(author, embed=embed)
 
-    embed = discord.Embed(
-        colour = discord.Colour.orange()
-    )
 
-    embed.set_author(name='Help')
-    embed.add_field(name='!ping', value='Returns Pong!', inline=False)
-    embed.add_field(name='!8ball', value='Shakes Magic 8ball for answer', inline=False)
+@client.event
+async def on_reaction_add(reaction, user):
+    channel = reaction.message.channel
+    await client.send_message(channel, '{} has added {} to the message: {}'.format(user.name, reaction.emoji, reaction.message.content))
 
-    await client.send_message(author, embed=embed)
-
-@client.command(name='8ball',
-                description="Answers a yes/no question.",
-                brief="Answers from the beyond.",
-                aliases=['eight_ball', 'eightball', '8-ball'],
-                pass_context=True)
-async def eight_ball(context):
-    possible_responses = [
-        'That is a resounding no',
-        'It is not looking likely',
-        'Too hard to tell',
-        'It is quite possible',
-        'Definitely',
-    ]
-    await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
+@client.event
+async def on_reaction_remove(reaction, user):
+    channel = reaction.message.channel
+    await client.send_message(channel, '{} has remmoved {} to the message: {}'.format(user.name, reaction.emoji, reaction.message.content))
 
 @client.command(pass_context=True)
 async def hello(context):
     await client.say("Hello " + context.message.author.mention)
 
+@client.event
+async def on_command_error(error, ctx):
+    msg_channel = ctx.message.channel
+    if isinstance(error, commands.CommandInvokeError):
+        LOG.error(error)
+        await client.send_message(msg_channel, '{} Error running the command'.format(ctx.message.author.mention))
 
 @client.event
 async def on_message(message):
@@ -90,27 +105,15 @@ async def on_message(message):
 @client.event
 async def on_ready():
     await client.change_presence(game=Game(name="with humans"))
-    print("Logged in as " + client.user.name)
-
-@client.command()
-async def bitcoin():
-    url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
-
-@client.command()
-async def ping():
-    await client.say('Pong')
+    LOG.info("Logged in as " + client.user.name)
 
 async def list_servers():
     await client.wait_until_ready()
     while not client.is_closed:
-        print("Current servers:")
+        server_list = []
         for server in client.servers:
-            print(server.name)
+            server_list.append(server.name)
+        LOG.info('Current servers: {}'.format(server_list))
         await asyncio.sleep(600)
 
 @client.command(pass_context=True)
@@ -149,13 +152,19 @@ def main():
         l_level = logging.DEBUG
     else:
         l_level = logging.INFO
+
     logging.getLogger(__package__).setLevel(l_level)
+    logging.getLogger('discord').setLevel(l_level)
+    logging.getLogger('websockets.protocol').setLevel(l_level)
     LOG.info("LONG LIVE TAMAGO")
     TOKEN = os.getenv('TOKEN')
+
+    for extension in EXTENSIONS:
+        plugin.load(extension, client)
 
     client.loop.create_task(change_status())
     client.loop.create_task(list_servers())
     client.run(TOKEN)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
