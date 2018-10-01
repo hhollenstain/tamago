@@ -8,6 +8,8 @@ INSTALL_REQUIREMENTS = [
     'asyncio',
     'coloredlogs',
     'discord.py',
+    'PyNaCl',
+    'youtube_dl'
 ]
 
 SETUP_REQUIRES = [
