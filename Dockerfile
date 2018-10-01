@@ -1,3 +1,9 @@
-FROM python:3.7-alpine
+FROM python:3.6-alpine
 
-RUN apk add ffmpeg
+COPY . /app
+WORKDIR /app
+
+RUN apk add ffmpeg gcc musl-dev libffi-dev make
+RUN pip install -e "."
+
+CMD ["tamago"]

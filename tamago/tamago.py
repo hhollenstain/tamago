@@ -16,6 +16,9 @@ from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
 from itertools import cycle
+# from .lib.plugin_manager import PlugibotnManager
+# #from .lib.plugins.ping import Ping
+# from .lib.plugins.help import Help
 
 
 PLAYERS = {}
@@ -189,23 +192,15 @@ async def leave(ctx):
 Music
 """
 
-# @client.command(pass_context=True)
-# async def play(ctx, url):
-#     server = ctx.message.server
-#     voice_client = client.voice_client_in(server)
-#     player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
-#     PLAYERS[server.id] = player
-#     player.start()
-
 @client.command(pass_context=True)
 async def play(ctx, url):
     opts = {
      'default_search': 'auto',
-     'quiet': False,
+     'quiet': True,
     }
     before_options = '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2'
-    server = ctx.message.server
 
+    server = ctx.message.server
     if server.id in PLAYERS:
          LOG.info("stopping current player before second player starts")
          PLAYERS[server.id].stop()
@@ -231,14 +226,24 @@ async def resume(ctx):
 
 @client.command(pass_contex=True)
 async def stop(ctx):
+    LOG.info('STOPING?')
     server_id = ctx.message.server.id
     PLAYERS[server_id].stop()
 
 @client.command(pass_context=True)
 async def queue(ctx, url):
+    opts = {
+     'default_search': 'auto',
+     'quiet': True,
+    }
+    before_options = '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2'
+
     server = ctx.message.server
     voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
+    player = await voice_client.create_ytdl_player(url,
+                                                   ytdl_options=opts,
+                                                   before_options=before_options,
+                                                   after=lambda: check_queue(server.id))
 
     if server.id in QUEUES:
         QUEUES[server.id].append(player)
@@ -251,6 +256,7 @@ def check_queue(id):
         player = QUEUES[id].pop(0)
         PLAYERS[id] = player
         player.start()
+
 
 def main():
     """Entrypoint if called as an executable."""
@@ -273,5 +279,5 @@ def main():
     client.loop.create_task(list_servers())
     client.run(TOKEN)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

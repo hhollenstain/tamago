@@ -5,9 +5,12 @@ from setuptools import setup, find_packages
 import tamago
 
 INSTALL_REQUIREMENTS = [
+    'aiomeasures',
+    'aioredis',
     'asyncio',
     'coloredlogs',
     'discord.py',
+    'motor',
     'PyNaCl',
     'youtube_dl'
 ]
