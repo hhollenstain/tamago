@@ -1,6 +1,9 @@
 import discord
+import logging
 import random
 from discord.ext import commands
+
+LOG = logging.getLogger(__name__)
 
 class Fun:
     def __init__(self, client):

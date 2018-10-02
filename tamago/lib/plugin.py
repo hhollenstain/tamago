@@ -8,7 +8,8 @@ LOG = logging.getLogger(__name__)
 def load(extension, client):
 
     try:
-        lib = importlib.import_module(extension, package="tamago")
+        #lib = importlib.import_module(extension, package="tamago")
+        lib = importlib.import_module(extension)
         if not hasattr(lib, 'setup'):
             del lib
             del sys.modules["tamago%s" % extension]
