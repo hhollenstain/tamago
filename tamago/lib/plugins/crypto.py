@@ -1,7 +1,10 @@
 import discord
 import aiohttp
 import json
+import logging
 from discord.ext import commands
+
+LOG = logging.getLogger(__name__)
 
 class Crypto:
     def __init__(self, client):

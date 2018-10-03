@@ -1,6 +1,9 @@
 import discord
+import logging
 import random
 from discord.ext import commands
+
+LOG = logging.getLogger(__name__)
 
 class Fun:
     def __init__(self, client):
@@ -20,6 +23,10 @@ class Fun:
             'Definitely',
         ]
         await self.client.say(random.choice(possible_responses) + ", " + ctx.message.author.mention)
+
+    @commands.command(pass_context=True)
+    async def hello(self, ctx):
+        await self.client.say('Hello {}'.format(ctx.message.author.mention))
 
 def setup(client):
    client.add_cog(Fun(client))
