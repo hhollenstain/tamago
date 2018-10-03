@@ -19,6 +19,17 @@ def parse_arguments():
                         help='show the version number and exit')
     return parser.parse_args()
 
+def friendly_time(seconds):
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+
+    periods = [('hours', hours), ('minutes', minutes), ('seconds', seconds)]
+    time_string = ', '.join('{} {}'.format(value, name)
+                            for name, value in periods
+                            if value)
+
+    return '{}'.format(time_string)
+
 async def change_status(client):
     status = ['God = Ginger', 'Expresso is lame!', 'Vern\'s woo']
     await client.wait_until_ready()

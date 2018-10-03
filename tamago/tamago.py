@@ -25,7 +25,7 @@ EXTENSIONS = [
              'tamago.lib.plugins.ping',
              #'tamago.lib.plugins.reactions',
              'tamago.lib.plugins.server',
-             'tamago.lib.plugins.voice',
+             #'tamago.lib.plugins.voice',
              'tamago.lib.plugins.fart',
              ]
 
@@ -44,11 +44,6 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
 
     await client.process_commands(message)
-
-@client.command(pass_context=True)
-async def hello(context):
-    await client.say("Hello " + context.message.author.mention)
-
 
 def main():
     """Entrypoint if called as an executable."""
