@@ -1,0 +1,8 @@
+version: '3'
+services:
+  tamago:
+    env_file:
+    - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
