@@ -6,6 +6,7 @@ import tamago
 
 INSTALL_REQUIREMENTS = [
     'asyncio',
+    'aiomeasures',
     'coloredlogs',
     'discord.py',
     'flask',
