@@ -3,8 +3,10 @@ services:
   tamago:
     env_file:
     - .env
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: hhollenstain/tamago:0.0.2
+  tamago-web:
+    env_file:
+    - .env
+    image: hhollenstain/tamago-web:latest
     ports:
       - 80:8080

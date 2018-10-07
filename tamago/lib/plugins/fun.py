@@ -22,7 +22,8 @@ class Fun:
             'It is quite possible',
             'Definitely',
         ]
-        await self.tamago.say(random.choice(possible_responses) + ", " + ctx.message.author.mention)
+        await self.tamago.say('{}, {}'.format(random.choice(possible_responses),
+                                              ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def hello(self, ctx):

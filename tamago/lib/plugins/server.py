@@ -1,5 +1,6 @@
 import discord
 import logging
+import random
 from discord import Game
 from discord.ext import commands
 from tamago import VERSION
@@ -30,8 +31,15 @@ class Server:
             colour = discord.Colour.gold()
         )
 
+        tamago_avatar = ['https://i.imgur.com/NtDueT7.png',
+                  'https://i.imgur.com/pzwv3Gs.png',
+                  'https://i.imgur.com/khPDnT2.png',
+                  'https://i.imgur.com/GEJjUD3.png',
+                  'https://i.imgur.com/e4EyhfI.png',
+                  ]
+
         embed.set_author(name='Benidct Tamago')
-        embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/536300196326412288/BiNSl6fJ_400x400.png')
+        embed.set_thumbnail(url=random.choice(tamago_avatar))
         embed.add_field(name='description', value='Bot is a WIP, have fun! Use !help for commands', inline=True)
         embed.add_field(name='Version', value=VERSION, inline=True)
 
