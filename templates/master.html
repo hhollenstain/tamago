@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		{% block custommeta %}{% endblock %}
+		<link rel="shortcut icon" href="{{ url_for('static', filename='img/tamago-icon.png')}}">
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+		<!-- Custom styles for this template -->
+		<title>{% block title %}{% endblock %} - Tamago bot</title>
+
+	</head>
+	<body>
+	<!-- BEGIN NAVBAR -->
+		<div class="navbar navbar-default navbar-fixed-top">
+			<div class="navbar navbar-img navbar-icon">
+				<img height='32' src="{{ url_for('static', filename='img/tamago-icon.png')}}" />
+			</div>
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			<a class="navbar-brand" href="{{ url_for('home') }}">home</a>
+			</div>
+			<div class="navbar-collapse collapse navbar-inverse-collapse">
+	    </div>
+	  </div>
+<!-- END NAVBAR --><!-- #EndLibraryItem --><!-- Begin page content -->
+<div class="container">
+        <div id="contentWrapper">
+
+	{% block body %}
+	{% endblock %}
+
+	{% block footer %}
+	{% endblock %}
+	</div>
+	</div>
+</div>
+<!-- #BeginLibraryItem "/library/footer.lbi" -->
+
+<!-- BEGIN FOOT INCLUDE -->
+	<div id="footer">
+		<div class="container">
+			<div class="row" style="text-align:center">
+				<div class='col-sm-12'>
+						<p class="text-muted">
+							Copyright &copy; 2018 Tamagobot
+						</p>
+				</div>
+			</div> <!-- row -->
+		</div> <!-- container -->
+	</div>  <!-- footer -->
+	</div>
+<!-- END FOOTER INCLUDE -->
+
+<!-- #EndLibraryItem --><!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+	Page Specific Script
+-->
+
+{% block javascript %}{% endblock %}
+
+	</body>
+</html>

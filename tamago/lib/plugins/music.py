@@ -27,7 +27,7 @@ class VoiceEntry:
         embed = discord.Embed(
             title = self.player.title,
             colour = discord.Colour.red(),
-            description = self.player.description[:500]
+            description = self.player.description[:144]
         )
         embed.set_thumbnail(url=self.player_info['thumbnail'])
         embed.add_field(name='Uploaded by:', value=self.player.uploader, inline=True)

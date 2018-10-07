@@ -6,6 +6,12 @@ from discord.ext import commands
 LOG = logging.getLogger(__name__)
 
 def get_emoji(status):
+    """
+    Returns the discord emoji code for the weather Status
+    :param string status: weather status that maps to the emoji status dictionary
+    :return: emoji code for Discord
+    :rtype: string
+    """
     emoji_status = {
                     'broken clouds': ':cloud:',
                     'Clear': ':sunny:',
@@ -14,6 +20,7 @@ def get_emoji(status):
                     'mist': ':cloud_rain:',
                     'Rain': ':cloud_rain:',
                     'scattered clouds': ':cloud:',
+                    'Thunderstorm': ':cloud_lighting:',
                    }
 
     if status in emoji_status:
@@ -22,6 +29,13 @@ def get_emoji(status):
         return status
 
 def get_weather(location, owm_api_key):
+    """
+    Gets weather data from Openweathermaps api
+    :param string location: location to search for weather
+    :param string owm_api_key: api key to use
+    :return: Returns weather information in a dictionary
+    :rtype: dictionary
+    """
     degree_sign= u'\N{DEGREE SIGN}'
     owm = pyowm.OWM(owm_api_key)
     weather = {}
@@ -43,10 +57,8 @@ def get_weather(location, owm_api_key):
                                                     degree_sign), 'inline': True }
     weather['Temp Low'] = {'value': '{}{}F'.format(w.get_temperature(unit='fahrenheit')['temp_min'],
                                                    degree_sign), 'inline': True }
-    if w.get_rain():
-        weather['Rain'] = {'value': w.get_rain(), 'inline': False }
-    if w.get_snow():
-        weather['Snow'] = {'value': w.get_snow(), 'inline': False }
+    weather['Rain'] = {'value': w.get_rain(), 'inline': False }
+    weather['Snow'] = {'value': w.get_snow(), 'inline': False }
 
     return weather
 
@@ -56,6 +68,13 @@ class Weather:
 
     @commands.command(pass_context=True)
     async def weather(self, ctx, location):
+        """
+        prints a discord embed with weather details of requested location
+        :param: object self: discord client
+        :param: dict   ctx: dictionary of message passed
+        :param: string location: location string either name of place or zipcode
+        :sends an embed discord message of weather values
+        """
         embed = discord.Embed(
             title = 'Weather for {}'.format(location),
             colour = discord.Colour.blue()
@@ -64,7 +83,8 @@ class Weather:
         weatherDict = get_weather(location, self.tamago.owm_api_key)
 
         for weatherValue in weatherDict:
-            embed.add_field(name=weatherValue, value=weatherDict[weatherValue]['value'], inline=weatherDict[weatherValue]['inline'])
+            if weatherDict[weatherValue]['value']:
+                embed.add_field(name=weatherValue, value=weatherDict[weatherValue]['value'], inline=weatherDict[weatherValue]['inline'])
 
         await self.tamago.say(embed=embed)
 

@@ -60,7 +60,6 @@ def main():
     logging.getLogger('urllib3').setLevel(l_level)
 
     LOG.info("LONG LIVE TAMAGO")
-    LOG.info(OWM_API_KEY)
     tamago = Tamago(shard_id=int(SHARD), shard_count=int(SHARD_COUNT), redis_url=REDIS_URL,
                     dd_agent_url=DD_AGENT_URL, owm_api_key=OWM_API_KEY, command_prefix=BOT_PREFIX)
 

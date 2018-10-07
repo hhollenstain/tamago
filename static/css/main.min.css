@@ -1,0 +1,116 @@
+/* Sticky footer styles
+ * -------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+ * -------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+#footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+
+hankcaption {
+  font-family:  arial,sans-serif;
+  display: none;
+}
+
+#hankhead:hover hankcaption {
+  display: block;
+}
+
+lorriecaption {
+  font-family:  arial,sans-serif;
+  display: none;
+}
+
+#lorriehead {
+  margin-top: 20px;
+}
+
+#lorriehead:hover lorriecaption {
+  display: block;
+}
+
+#homeheader {
+  font-size: 50px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#travel-jcarousel {
+  width: 400px;
+  margin: 0 auto;
+
+}
+
+.jcarousel-lh-wrapper {
+  min-width: 300px;
+}
+.expand-img {
+  max-height: 200px;
+}
+
+.contentHeader {
+  font-size: 30px;
+  text-align: center;
+}
+
+
+/* PopUp custom css
+ * -------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+/*
+.popup-gallery a {
+  margin: 10px;
+}
+*/
+
+.popup-gallery img {
+  margin: 10px;
+}
+
+.ptext {
+  font-family:  arial,sans-serif;
+}
+
+.mfp-title {
+  font-family:  arial,sans-serif;
+}
+
+.mfp-title small{
+  font-family:  "Vladimir Script";
+}
+
+.fancyheader {
+  font-family: "Vladimir Script";
+}
