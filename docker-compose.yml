@@ -3,7 +3,7 @@ services:
   tamago:
     env_file:
     - .env
-    image: hhollenstain/tamago:0.0.2
+    image: hhollenstain/tamago:latest
   tamago-web:
     env_file:
     - .env
