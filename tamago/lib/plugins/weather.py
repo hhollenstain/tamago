@@ -67,7 +67,7 @@ class Weather:
         self.tamago = tamago
 
     @commands.command(pass_context=True)
-    async def weather(self, ctx, location):
+    async def weather(self, ctx, *location):
         """
         prints a discord embed with weather details of requested location
         :param: object self: discord client
@@ -75,6 +75,7 @@ class Weather:
         :param: string location: location string either name of place or zipcode
         :sends an embed discord message of weather values
         """
+        location = ' '.join(location)
         embed = discord.Embed(
             title = 'Weather for {}'.format(location),
             colour = discord.Colour.blue()
