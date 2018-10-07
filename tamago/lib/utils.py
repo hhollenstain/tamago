@@ -17,6 +17,7 @@ def parse_arguments():
     parser.add_argument('--version', action='version',
                         version=format(VERSION),
                         help='show the version number and exit')
+
     return parser.parse_args()
 
 def friendly_time(seconds):
@@ -31,14 +32,20 @@ def friendly_time(seconds):
     return '{}'.format(time_string)
 
 async def change_status(client):
-    status = ['God = Ginger', 'Expresso is lame!', 'Vern\'s woo']
+    status = ['God = Ginger',
+              'Expresso is lame!',
+              'Vern\'s woah',
+              'Loonix the fool',
+              'Stomper the unibawler!',
+              ]
+
     await client.wait_until_ready()
     sts = cycle(status)
 
     while not client.is_closed:
         current_status = next(sts)
         await client.change_presence(game=discord.Game(name=current_status))
-        await asyncio.sleep(15)
+        await asyncio.sleep(30)
 
 async def list_servers(client):
     await client.wait_until_ready()

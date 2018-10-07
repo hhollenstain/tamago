@@ -20,7 +20,7 @@ def get_emoji(status):
                     'mist': ':cloud_rain:',
                     'Rain': ':cloud_rain:',
                     'scattered clouds': ':cloud:',
-                    'Thunderstorm': ':cloud_lighting:',
+                    'Thunderstorm': ':cloud_lightning:',
                    }
 
     if status in emoji_status:

@@ -12,7 +12,7 @@ def web_logger(response):
     log_the_status_code - prints logging status after every request
     param obj response: the response from a route for logging
     """
-    LOG.info('%s %s %s %s', flask.request.remote_addr, flask.request.method,
+    LOG.debug('%s %s %s %s', flask.request.remote_addr, flask.request.method,
                     flask.request.full_path, response.status)
     return response
 
