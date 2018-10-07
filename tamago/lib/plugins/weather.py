@@ -7,7 +7,13 @@ LOG = logging.getLogger(__name__)
 
 def get_emoji(status):
     emoji_status = {
-                    'broken clouds': ':cloud:'
+                    'broken clouds': ':cloud:',
+                    'Clear': ':sunny:',
+                    'Clouds': ':cloud:',
+                    'light rain': ':cloud_rain:',
+                    'mist': ':cloud_rain:',
+                    'Rain': ':cloud_rain:',
+                    'scattered clouds': ':cloud:',
                    }
 
     if status in emoji_status:
@@ -26,7 +32,7 @@ def get_weather(location, owm_api_key):
         weather['ERROR'] = {'value': 'Unable to find location, try another', 'inline': True }
         return weather
 
-    weather['Status'] = {'value': get_emoji(w.get_detailed_status()), 'inline': True }
+    weather['Status'] = {'value': get_emoji(w.get_status()), 'inline': True }
     weather['Cloud Coverage'] = {'value': '{}%'.format(w.get_clouds()), 'inline': True }
     weather['Wind'] = {'value': '{} mph'.format(round(w.get_wind(unit='miles_hour')['speed'], 2)),
                        'inline': True }
