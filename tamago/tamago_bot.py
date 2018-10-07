@@ -14,7 +14,6 @@ from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
 from tamago.lib import plugin, utils
-from tamago.tamago_web import keep_alive
 from tamago.tamago import Tamago
 
 
@@ -28,8 +27,6 @@ EXTENSIONS = [
              # #'tamago.lib.plugins.reactions',
              'tamago.lib.plugins.server',
              'tamago.lib.plugins.weather',
-             # #'tamago.lib.plugins.voice',
-             # 'tamago.lib.plugins.fart',
              ]
 
 LOG = logging.getLogger(__name__)
@@ -68,7 +65,6 @@ def main():
 
     tamago.loop.create_task(utils.change_status(tamago))
     tamago.loop.create_task(utils.list_servers(tamago))
-    keep_alive()
     tamago.run(TOKEN)
 
 if __name__ == '__main__':

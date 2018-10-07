@@ -9,9 +9,7 @@ INSTALL_REQUIREMENTS = [
     'aiomeasures',
     'coloredlogs',
     'discord.py',
-    'flask',
     'PyNaCl',
-    'waitress',
     'pyowm',
     'youtube_dl'
 ]
