@@ -1,74 +1,130 @@
-#!/usr/bin/env python3
-"""
-Tamago BOT LIVES!
-"""
-import asyncio
-import random
-import os
 import discord
-import importlib
 import logging
-import coloredlogs
-import sys
-from discord import Game
-from discord.ext import commands
+import os
+import asyncio
+import aiohttp
+import json
+#from database import Db
 from discord.ext.commands import Bot
-from tamago.lib import plugin, utils
+from tamago.lib.datadog import DDAgent
+
+log = logging.getLogger('discord')
 
 
-EXTENSIONS = [
-             'tamago.lib.plugins.crypto',
-             'tamago.lib.plugins.fun',
-             # 'tamago.lib.plugins.help',
-             'tamago.lib.plugins.mod_tools',
-             'tamago.lib.plugins.music',
-             'tamago.lib.plugins.ping',
-             #'tamago.lib.plugins.reactions',
-             'tamago.lib.plugins.server',
-             #'tamago.lib.plugins.voice',
-             'tamago.lib.plugins.fart',
-             ]
+class Tamago(discord.ext.commands.Bot):
+    """A modified discord.Client class
 
-LOG = logging.getLogger(__name__)
-BOT_PREFIX = ("?", "!")
-client = Bot(command_prefix=BOT_PREFIX)
+    This mod dispatches most events to the different plugins.
 
-@client.event
-async def on_message(message):
-    # we do not want the bot to reply to itself
-    if message.author == client.user:
-        return
+    """
 
-    if message.content.startswith('expresso'):
-        msg = 'https://scontent-sea1-1.xx.fbcdn.net/v/t1.0-9/5018_110506398392_7227641_n.jpg?_nc_cat=103&oh=09d93ddbb2a1d5f653895ba67b71845b&oe=5C5AA237'.format(message)
-        await client.send_message(message.channel, msg)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        #self.redis_url = kwargs.get('redis_url')
+        self.dd_agent_url = kwargs.get('dd_agent_url')
+        # self.db = Db(self.redis_url, self.mongo_url, self.loop)
+        self.stats = DDAgent(self.dd_agent_url)
 
-    await client.process_commands(message)
+    # def run(self, *args):
+    #     self.loop.run_until_complete(self.start(*args))
 
-def main():
-    """Entrypoint if called as an executable."""
-    args = utils.parse_arguments()
-    logging.basicConfig(level=logging.INFO)
-    coloredlogs.install(level=0,
-                        fmt="[%(asctime)s][%(levelname)s] [%(name)s.%(funcName)s:%(lineno)d] %(message)s",
-                        isatty=True)
-    if args.debug:
-        l_level = logging.DEBUG
-    else:
-        l_level = logging.INFO
+    async def on_ready(self):
+        """Called when the bot is ready.
 
-    logging.getLogger(__package__).setLevel(l_level)
-    logging.getLogger('discord').setLevel(l_level)
-    logging.getLogger('websockets.protocol').setLevel(l_level)
-    LOG.info("LONG LIVE TAMAGO")
-    TOKEN = os.getenv('TOKEN')
+        Connects to the database
+        Dispatched all the ready events
 
-    for extension in EXTENSIONS:
-        plugin.load(extension, client)
+        """
+        log.info('Connected to the database')
 
-    client.loop.create_task(utils.change_status(client))
-    client.loop.create_task(utils.list_servers(client))
-    client.run(TOKEN)
+    async def send_message(self, *args, **kwargs):
+        self.stats.incr('mee6.sent_messages')
+        return await super().send_message(*args, **kwargs)
 
-if __name__ == '__main__':
-    main()
+    async def on_message(self, message):
+        self.stats.incr('mee6.recv_messages')
+        if message.channel.is_private:
+            return
+
+        #await self.process_commands(message)
+
+    # async def on_message_edit(self, before, after):
+    #     if before.channel.is_private:
+    #         return
+    #
+    #     server = after.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_message_edit(before, after))
+
+    # async def on_message_delete(self, message):
+    #     if message.channel.is_private:
+    #         return
+    #
+    #     server = message.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_message_delete(message))
+
+    # async def on_channel_create(self, channel):
+    #     if channel.is_private:
+    #         return
+    #
+    #     server = channel.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_channel_create(channel))
+
+    # async def on_channel_update(self, before, after):
+    #     if before.is_private:
+    #         return
+    #
+    #     server = after.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_channel_update(before, after))
+
+    # async def on_channel_delete(self, channel):
+    #     if channel.is_private:
+    #         return
+    #
+    #     server = channel.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_channel_delete(channel))
+    #
+    # async def on_member_join(self, member):
+    #     server = member.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_member_join(member))
+
+    # async def on_member_remove(self, member):
+    #     server = member.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_member_remove(member))
+    #
+    # async def on_member_update(self, before, after):
+    #     server = after.server
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_member_update(before, after))
+    #
+    # async def on_server_update(self, before, after):
+    #     server = after
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_server_update(before, after))
+    #
+    # async def on_schwifty_playing(self, guild_id, url):
+    #     server = discord.Object(id=str(guild_id))
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_schwifty_playing(guild_id, url))
+    #
+    # async def on_schwifty_finished_playing(self, guild_id):
+    #     server = discord.Object(id=str(guild_id))
+    #     enabled_plugins = await self.get_plugins(server)
+    #     for plugin in enabled_plugins:
+    #         self.loop.create_task(plugin.on_schwifty_finished_playing(guild_id))

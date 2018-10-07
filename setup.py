@@ -8,16 +8,10 @@ INSTALL_REQUIREMENTS = [
     'asyncio',
     'coloredlogs',
     'discord.py',
+    'flask',
     'PyNaCl',
+    'waitress',
     'youtube_dl'
-]
-
-SETUP_REQUIRES = [
-    'discord==1.0.0'
-]
-
-DEPENDENCY_LINK = [
-    'https://github.com/Rapptz/discord.py/tarball/rewrite#egg=discord-1.0.0a',
 ]
 
 TEST_REQUIREMENTS = {
@@ -31,8 +25,6 @@ TEST_REQUIREMENTS = {
 setup(
     name='tamago',
     version=tamago.VERSION,
-    #dependency_links=DEPENDENCY_LINK,
-    #setup_requires=SETUP_REQUIRES,
     description='Tamgo Discord Bot',
     url='https://github.com/hhollenstain/tamago',
     packages=find_packages(),
@@ -41,7 +33,7 @@ setup(
     extras_require=TEST_REQUIREMENTS,
     entry_points={
         'console_scripts':  [
-            'tamago = tamago.tamago:main',
+            'tamago = tamago.tamago_bot:main',
         ],
     },
     )
