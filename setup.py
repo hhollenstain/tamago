@@ -12,6 +12,7 @@ INSTALL_REQUIREMENTS = [
     'flask',
     'PyNaCl',
     'waitress',
+    'pyowm',
     'youtube_dl'
 ]
 

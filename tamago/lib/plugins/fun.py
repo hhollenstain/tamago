@@ -28,15 +28,15 @@ class Fun:
     async def hello(self, ctx):
         await self.tamago.say('Hello {}'.format(ctx.message.author.mention))
 
-    async def on_message(self, message):
-        if message.author == self.tamago.user:
-            return
-
-        if message.content.startswith('expresso'):
-            msg = 'https://scontent-sea1-1.xx.fbcdn.net/v/t1.0-9/5018_110506398392_7227641_n.jpg?_nc_cat=103&oh=09d93ddbb2a1d5f653895ba67b71845b&oe=5C5AA237'.format(message)
-            await self.tamago.send_message(message.channel, msg)
-
-        await self.tamago.process_commands(message)
+    # async def on_message(self, message):
+    #     if message.author == self.tamago.user:
+    #         return
+    #
+    #     if message.content.startswith('expresso'):
+    #         msg = 'https://scontent-sea1-1.xx.fbcdn.net/v/t1.0-9/5018_110506398392_7227641_n.jpg?_nc_cat=103&oh=09d93ddbb2a1d5f653895ba67b71845b&oe=5C5AA237'.format(message)
+    #         await self.tamago.send_message(message.channel, msg)
+    #
+    #     await self.tamago.process_commands(message)
 
 def setup(tamago):
    tamago.add_cog(Fun(tamago))
