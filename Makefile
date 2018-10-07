@@ -15,6 +15,3 @@ test:
 
 dist: init check
 	pipenv run python setup.py sdist bdist_wheel install
-
-publish: check
-	pipenv run python setup.py sdist bdist_wheel upload -r artifactory

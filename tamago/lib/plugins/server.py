@@ -2,6 +2,7 @@ import discord
 import logging
 from discord import Game
 from discord.ext import commands
+from tamago import VERSION
 
 LOG = logging.getLogger(__name__)
 
@@ -29,10 +30,10 @@ class Server:
             colour = discord.Colour.gold()
         )
 
-        embed.set_image(url='https://pbs.twimg.com/profile_images/536300196326412288/BiNSl6fJ_400x400.png')
         embed.set_author(name='Benidct Tamago')
-        embed.set_thumbnail(url='https://kikusushi.ca/dynamic_content/product_images/5/x533_50befac8f6b00a5ec710a911b675a98b.jpg.pagespeed.ic.Zsju56w-VL.webp')
-        embed.add_field(name='description', value='Bot is a WIP, have fun!', inline=False)
+        embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/536300196326412288/BiNSl6fJ_400x400.png')
+        embed.add_field(name='description', value='Bot is a WIP, have fun! Use !help for commands', inline=True)
+        embed.add_field(name='Version', value=VERSION, inline=True)
 
         await self.client.say(embed=embed)
 

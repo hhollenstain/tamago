@@ -27,7 +27,7 @@ class VoiceEntry:
         embed = discord.Embed(
             title = self.player.title,
             colour = discord.Colour.red(),
-            description = self.player.description[:500]
+            description = self.player.description[:144]
         )
         embed.set_thumbnail(url=self.player_info['thumbnail'])
         embed.add_field(name='Uploaded by:', value=self.player.uploader, inline=True)
@@ -145,32 +145,35 @@ class Music:
             'default_search': 'auto',
             'quiet': True,
         }
-
+        before_options = '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5'
         if state.voice is None:
             success = await ctx.invoke(self.summon)
             if not success:
                 return
 
         try:
-            player = await state.voice.create_ytdl_player(song, ytdl_options=opts, after=state.toggle_next)
+            player = await state.voice.create_ytdl_player(song,
+                                                          ytdl_options=opts,
+                                                          before_options=before_options,
+                                                          after=state.toggle_next)
         except Exception as e:
             fmt = 'An error occurred while processing this request: ```py\n{}: {}\n```'
             await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
         else:
-            player.volume = 0.6
+            player.volume = 0.04
             entry = VoiceEntry(ctx.message, player)
             await self.bot.say('Enqueued ' + str(entry))
             await state.songs.put(entry)
 
-    @commands.command(pass_context=True, no_pm=True)
-    async def volume(self, ctx, value : int):
-        """Sets the volume of the currently playing song."""
-
-        state = self.get_voice_state(ctx.message.server)
-        if state.is_playing():
-            player = state.player
-            player.volume = value / 100
-            await self.bot.say('Set the volume to {:.0%}'.format(player.volume))
+    # @commands.command(pass_context=True, no_pm=True)
+    # async def volume(self, ctx, value : int):
+    #     """Sets the volume of the currently playing song."""
+    #
+    #     state = self.get_voice_state(ctx.message.server)
+    #     if state.is_playing():
+    #         player = state.player
+    #         player.volume = value / 100
+    #         await self.bot.say('Set the volume to {:.0%}'.format(player.volume))
 
     @commands.command(pass_context=True, no_pm=True)
     async def pause(self, ctx):

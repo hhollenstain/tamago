@@ -6,8 +6,8 @@ from discord.ext import commands
 LOG = logging.getLogger(__name__)
 
 class Fun:
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, tamago):
+        self.tamago = tamago
 
     @commands.command(name='8ball',
                     description="Answers a yes/no question.",
@@ -22,11 +22,21 @@ class Fun:
             'It is quite possible',
             'Definitely',
         ]
-        await self.client.say(random.choice(possible_responses) + ", " + ctx.message.author.mention)
+        await self.tamago.say(random.choice(possible_responses) + ", " + ctx.message.author.mention)
 
     @commands.command(pass_context=True)
     async def hello(self, ctx):
-        await self.client.say('Hello {}'.format(ctx.message.author.mention))
+        await self.tamago.say('Hello {}'.format(ctx.message.author.mention))
 
-def setup(client):
-   client.add_cog(Fun(client))
+    # async def on_message(self, message):
+    #     if message.author == self.tamago.user:
+    #         return
+    #
+    #     if message.content.startswith('expresso'):
+    #         msg = 'https://scontent-sea1-1.xx.fbcdn.net/v/t1.0-9/5018_110506398392_7227641_n.jpg?_nc_cat=103&oh=09d93ddbb2a1d5f653895ba67b71845b&oe=5C5AA237'.format(message)
+    #         await self.tamago.send_message(message.channel, msg)
+    #
+    #     await self.tamago.process_commands(message)
+
+def setup(tamago):
+   tamago.add_cog(Fun(tamago))
