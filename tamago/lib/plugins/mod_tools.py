@@ -9,6 +9,7 @@ class ModTools:
         self.client = client
 
     @commands.command(pass_context=True)
+    @commands.has_permissions(manage_messages=True, administrator=True)
     async def clear(self, ctx, amount=5):
         LOG.info
         channel = ctx.message.channel
