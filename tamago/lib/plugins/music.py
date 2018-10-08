@@ -1,7 +1,10 @@
 import asyncio
 import discord
+import logging
 from discord.ext import commands
 from tamago.lib  import utils
+
+LOG = logging.getLogger(__name__)
 
 if not discord.opus.is_loaded():
     discord.opus.load_opus('opus')
@@ -156,24 +159,26 @@ class Music:
                                                           ytdl_options=opts,
                                                           before_options=before_options,
                                                           after=state.toggle_next)
+
         except Exception as e:
             fmt = 'An error occurred while processing this request: ```py\n{}: {}\n```'
             await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
         else:
             player.volume = 0.04
             entry = VoiceEntry(ctx.message, player)
-            await self.bot.say('Enqueued ' + str(entry))
+            await self.bot.say('Queued {}'.format(str(entry)))
             await state.songs.put(entry)
 
-    # @commands.command(pass_context=True, no_pm=True)
-    # async def volume(self, ctx, value : int):
-    #     """Sets the volume of the currently playing song."""
-    #
-    #     state = self.get_voice_state(ctx.message.server)
-    #     if state.is_playing():
-    #         player = state.player
-    #         player.volume = value / 100
-    #         await self.bot.say('Set the volume to {:.0%}'.format(player.volume))
+    @commands.command(pass_context=True, no_pm=True)
+    @commands.has_permissions(manage_messages=True, administrator=True)
+    async def volume(self, ctx, value : int):
+        """Sets the volume of the currently playing song."""
+
+        state = self.get_voice_state(ctx.message.server)
+        if state.is_playing():
+            player = state.player
+            player.volume = value / 100
+            await self.bot.say('Set the volume to {:.0%}'.format(player.volume))
 
     @commands.command(pass_context=True, no_pm=True)
     async def pause(self, ctx):
