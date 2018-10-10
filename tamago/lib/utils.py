@@ -2,11 +2,14 @@ import asyncio
 import argparse
 import discord
 import logging
+import os
 from discord import Game
 from itertools import cycle
 from tamago import VERSION
+from discord.ext import commands
 
 LOG = logging.getLogger(__name__)
+BLOCKED_USERS = os.getenv('BLOCKED_USERS') or '123456'
 
 def parse_arguments():
     """parsing arguments.
@@ -30,6 +33,15 @@ def friendly_time(seconds):
                             if value)
 
     return '{}'.format(time_string)
+
+
+def block_check():
+    def predicate(ctx):
+        if str(ctx.message.author.id) in BLOCKED_USERS:
+            return False
+        else:
+            return True
+    return commands.check(predicate)
 
 async def change_status(client):
     status = ['God = Ginger',

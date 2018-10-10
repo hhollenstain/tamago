@@ -11,13 +11,27 @@ class ModTools:
     @commands.command(pass_context=True)
     @commands.has_permissions(manage_messages=True, administrator=True)
     async def clear(self, ctx, amount=5):
-        LOG.info
         channel = ctx.message.channel
         messages = []
-        async for message in self.client.logs_from(channel, limit=int(amount) + 1):
+        async for message in channel.history(limit=int(amount) + 1):
             messages.append(message)
-        await self.client.delete_messages(messages)
-        await self.client.say('%s messages purged' % amount)
+        await channel.delete_messages(messages)
+        await ctx.send('%s messages purged' % amount)
+
+    @commands.command(name='getid', aliases=['id'], pass_context=True)
+    @commands.has_permissions(manage_messages=True, administrator=True)
+    async def getid(self, ctx):
+        if not ctx.message.mentions:
+            await ctx.send('{} is your UID'.format(ctx.message.author.id))
+        else:
+            embed = discord.Embed(
+                title = 'UIDs of users',
+                colour = discord.Colour.orange()
+            )
+            for member in ctx.message.mentions:
+                embed.add_field(name=member.name, value=member.id, inline=False)
+
+            await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(ModTools(client))

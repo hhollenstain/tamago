@@ -8,7 +8,7 @@ INSTALL_REQUIREMENTS = [
     'asyncio',
     'aiomeasures',
     'coloredlogs',
-    'discord.py',
+    'over_stats',
     'PyNaCl',
     'pyowm',
     'youtube_dl'
@@ -21,6 +21,11 @@ TEST_REQUIREMENTS = {
         'sure',
         ]
     }
+
+DEPENDENCY_LINKS= [
+    #'https://github.com/Rapptz/discord.py/tarball/rewrite#egg=discord.py-1.0.0.dev',
+    'git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py==1.0.0',
+]
 
 setup(
     name='tamago',

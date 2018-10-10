@@ -1,6 +1,7 @@
 import discord
 import logging
 from discord.ext import commands
+from tamago.lib  import utils
 
 LOG = logging.getLogger(__name__)
 
@@ -12,8 +13,9 @@ class Ping:
     #     await self.client.send_message(message.channel, 'Message deleted.')
 
     @commands.command()
-    async def ping(self):
-        await self.client.say('Pong')
+    @utils.block_check()
+    async def ping(self, ctx):
+        await ctx.send('Pong')
 
 def setup(client):
     client.add_cog(Ping(client))

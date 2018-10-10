@@ -2,6 +2,7 @@ import discord
 import logging
 import pyowm
 from discord.ext import commands
+from tamago.lib import utils
 
 LOG = logging.getLogger(__name__)
 
@@ -67,6 +68,7 @@ class Weather:
         self.tamago = tamago
 
     @commands.command(pass_context=True)
+    @utils.block_check()
     async def weather(self, ctx, *location):
         """
         prints a discord embed with weather details of requested location
@@ -87,7 +89,7 @@ class Weather:
             if weatherDict[weatherValue]['value']:
                 embed.add_field(name=weatherValue, value=weatherDict[weatherValue]['value'], inline=weatherDict[weatherValue]['inline'])
 
-        await self.tamago.say(embed=embed)
+        await ctx.send(embed=embed)
 
 def setup(tamago):
     tamago.add_cog(Weather(tamago))

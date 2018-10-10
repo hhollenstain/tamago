@@ -20,11 +20,9 @@ from tamago.tamago import Tamago
 EXTENSIONS = [
              'tamago.lib.plugins.crypto',
              'tamago.lib.plugins.fun',
-             # #'tamago.lib.plugins.help',
              'tamago.lib.plugins.mod_tools',
              'tamago.lib.plugins.music',
              'tamago.lib.plugins.ping',
-             # #'tamago.lib.plugins.reactions',
              'tamago.lib.plugins.server',
              'tamago.lib.plugins.weather',
              ]
