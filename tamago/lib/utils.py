@@ -55,9 +55,9 @@ async def change_status(client):
 
 async def list_servers(client):
     await client.wait_until_ready()
-    while not client.is_closed:
+    while not client.is_closed():
         server_list = []
-        for server in client.servers:
+        for server in client.guilds:
             server_list.append(server.name)
         LOG.info('Current servers: {}'.format(server_list))
         await asyncio.sleep(600)
