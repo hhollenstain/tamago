@@ -4,6 +4,7 @@ import random
 from discord import Game
 from discord.ext import commands
 from tamago import VERSION
+from tamago.lib import utils
 
 LOG = logging.getLogger(__name__)
 
@@ -12,8 +13,10 @@ class Server:
         self.client = client
 
     async def on_ready(self):
-        await self.client.change_presence(status=discord.Status.idle, activity=Game(name='Bots "R" Us'))
+        await self.client.change_presence(status=discord.Status.idle, activity=Game(name='Waking up, making coffee...'))
         LOG.info('Logged in as {}'.format(self.client.user.name))
+        self.client.loop.create_task(utils.change_status(self.client))
+        self.client.loop.create_task(utils.list_servers(self.client))
 
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandInvokeError):

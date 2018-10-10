@@ -61,8 +61,6 @@ def main():
     for extension in EXTENSIONS:
         plugin.load(extension, tamago)
 
-    tamago.loop.create_task(utils.change_status(tamago))
-    tamago.loop.create_task(utils.list_servers(tamago))
     tamago.run(TOKEN)
 
 if __name__ == '__main__':
