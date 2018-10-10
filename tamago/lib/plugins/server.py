@@ -12,11 +12,10 @@ class Server:
         self.client = client
 
     async def on_ready(self):
-        await self.client.change_presence(game=Game(name='Bots "R" Us'))
+        await self.client.change_presence(status=discord.Status.idle, activity=Game(name='Bots "R" Us'))
         LOG.info('Logged in as {}'.format(self.client.user.name))
 
-    async def on_command_error(self, error, ctx):
-        msg_channel = ctx.message.channel
+    async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandInvokeError):
             LOG.error(error)
             msg = '{} Error running the command'.format(ctx.message.author.mention)
@@ -25,10 +24,10 @@ class Server:
         if isinstance(error, commands.CheckFailure):
             msg = ':octagonal_sign: you do not have permission to run this command, {}'.format(ctx.message.author.mention)
 
-        await self.client.send_message(msg_channel, '{}'.format(msg))
+        await ctx.send('{}'.format(msg))
 
     @commands.command()
-    async def tamago(self):
+    async def tamago(self, ctx):
         embed = discord.Embed(
             title = 'Tamago Bot',
             description = 'Tamago Bot information',
@@ -48,7 +47,7 @@ class Server:
         embed.add_field(name='description', value='Bot is a WIP, have fun! Use !help for commands', inline=True)
         embed.add_field(name='Version', value=VERSION, inline=True)
 
-        await self.client.say(embed=embed)
+        await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Server(client))

@@ -1,13 +1,12 @@
 import asyncio
 import discord
+import logging
 from discord.ext import commands
+from tamago.lib  import utils
+
+LOG = logging.getLogger(__name__)
 
 if not discord.opus.is_loaded():
-    # the 'opus' library here is opus.dll on windows
-    # or libopus.so on linux in the current directory
-    # you should replace this with the location the
-    # opus library is located in and with the proper filename.
-    # note that on windows this DLL is automatically provided for you
     discord.opus.load_opus('opus')
 
 class VoiceEntry:
@@ -15,6 +14,10 @@ class VoiceEntry:
         self.requester = message.author
         self.channel = message.channel
         self.player = player
+        self.player_info = self.player.yt.extract_info(player.url, download=False)
+        if "entries" in self.player_info:
+            self.player_info = self.player_info['entries'][0]
+
 
     def __str__(self):
         fmt = '*{0.title}* uploaded by {0.uploader} and requested by {1.display_name}'
@@ -22,6 +25,19 @@ class VoiceEntry:
         if duration:
             fmt = fmt + ' [length: {0[0]}m {0[1]}s]'.format(divmod(duration, 60))
         return fmt.format(self.player, self.requester)
+
+    def embed(self):
+        embed = discord.Embed(
+            title = self.player.title,
+            colour = discord.Colour.red(),
+            description = self.player.description[:144]
+        )
+        embed.set_thumbnail(url=self.player_info['thumbnail'])
+        embed.add_field(name='Uploaded by:', value=self.player.uploader, inline=True)
+        embed.add_field(name='Duration:', value=utils.friendly_time(self.player.duration), inline=True)
+        embed.add_field(name='URL:', value=self.player_info['webpage_url'])
+
+        return embed
 
 class VoiceState:
     def __init__(self, bot):
@@ -56,7 +72,7 @@ class VoiceState:
         while True:
             self.play_next_song.clear()
             self.current = await self.songs.get()
-            await self.bot.send_message(self.current.channel, 'Now playing ' + str(self.current))
+            await self.bot.send_message(self.current.channel, embed=self.current.embed())
             self.current.player.start()
             await self.play_next_song.wait()
 
@@ -132,24 +148,29 @@ class Music:
             'default_search': 'auto',
             'quiet': True,
         }
-
+        before_options = '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5'
         if state.voice is None:
             success = await ctx.invoke(self.summon)
             if not success:
                 return
 
         try:
-            player = await state.voice.create_ytdl_player(song, ytdl_options=opts, after=state.toggle_next)
+            player = await state.voice.create_ytdl_player(song,
+                                                          ytdl_options=opts,
+                                                          before_options=before_options,
+                                                          after=state.toggle_next)
+
         except Exception as e:
             fmt = 'An error occurred while processing this request: ```py\n{}: {}\n```'
             await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
         else:
-            player.volume = 0.6
+            player.volume = 0.04
             entry = VoiceEntry(ctx.message, player)
-            await self.bot.say('Enqueued ' + str(entry))
+            await self.bot.say('Queued {}'.format(str(entry)))
             await state.songs.put(entry)
 
     @commands.command(pass_context=True, no_pm=True)
+    @commands.has_permissions(manage_messages=True, administrator=True)
     async def volume(self, ctx, value : int):
         """Sets the volume of the currently playing song."""
 
@@ -230,3 +251,6 @@ class Music:
         else:
             skip_count = len(state.skip_votes)
             await self.bot.say('Now playing {} [skips: {}/3]'.format(state.current, skip_count))
+
+def setup(client):
+   client.add_cog(Music(client))
