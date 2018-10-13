@@ -16,16 +16,15 @@ from discord.ext.commands import Bot
 from tamago.lib import plugin, utils
 from tamago.tamago import Tamago
 
-
 EXTENSIONS = [
-             'tamago.lib.plugins.crypto',
-             'tamago.lib.plugins.fun',
-             'tamago.lib.plugins.mod_tools',
-             'tamago.lib.plugins.music',
-             'tamago.lib.plugins.ping',
-             'tamago.lib.plugins.server',
-             'tamago.lib.plugins.weather',
-             ]
+          'crypto',
+          'fun',
+          'mod_tools',
+          'music',
+          'ping',
+          'server',
+          'weather',
+          ]
 
 LOG = logging.getLogger(__name__)
 
@@ -36,6 +35,7 @@ REDIS_URL = os.getenv('REDIS_URL')
 SHARD = os.getenv('SHARD') or 0
 SHARD_COUNT = os.getenv('SHARD_COUNT') or 1
 TOKEN = os.getenv('TOKEN')
+
 
 def main():
     """Entrypoint if called as an executable."""
@@ -59,7 +59,7 @@ def main():
                     dd_agent_url=DD_AGENT_URL, owm_api_key=OWM_API_KEY, command_prefix=BOT_PREFIX)
 
     for extension in EXTENSIONS:
-        plugin.load(extension, tamago)
+        plugin.load('tamago.lib.plugins.{}'.format(extension), tamago)
 
     tamago.run(TOKEN)
 

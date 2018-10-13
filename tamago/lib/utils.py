@@ -35,6 +35,8 @@ def friendly_time(seconds):
 
     return '{}'.format(time_string)
 
+def message_check(message, mentions):
+    return message.author.id in mentions
 
 def block_check():
     def predicate(ctx):
