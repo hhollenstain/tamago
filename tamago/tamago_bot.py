@@ -23,6 +23,7 @@ EXTENSIONS = [
           'music',
           'ping',
           'server',
+          'stats_overwatch',
           'weather',
           ]
 

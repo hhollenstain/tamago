@@ -4,7 +4,7 @@ import discord
 import logging
 import os
 from discord import Game
-from itertools import cycle
+from itertools import cycle, islice
 from tamago import VERSION
 from discord.ext import commands
 
@@ -23,6 +23,10 @@ def parse_arguments():
                         help='show the version number and exit')
 
     return parser.parse_args()
+
+def take(n, iterable):
+    "Return first n items of the iterable as a list"
+    return list(islice(iterable, n))
 
 def friendly_time(seconds):
     minutes, seconds = divmod(seconds, 60)

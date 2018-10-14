@@ -9,8 +9,11 @@ INSTALL_REQUIREMENTS = [
     'aiomeasures',
     'coloredlogs',
     'over_stats',
+    'oyaml',
     'PyNaCl',
     'pyowm',
+    'python-overwatch',
+    'pyyaml',
     'youtube_dl'
 ]
 
