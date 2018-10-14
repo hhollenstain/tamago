@@ -4,7 +4,7 @@ import discord
 import logging
 import os
 from discord import Game
-from itertools import cycle
+from itertools import cycle, islice
 from tamago import VERSION
 from discord.ext import commands
 
@@ -24,6 +24,10 @@ def parse_arguments():
 
     return parser.parse_args()
 
+def take(n, iterable):
+    "Return first n items of the iterable as a list"
+    return list(islice(iterable, n))
+
 def friendly_time(seconds):
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
@@ -35,6 +39,8 @@ def friendly_time(seconds):
 
     return '{}'.format(time_string)
 
+def message_check(message, mentions):
+    return message.author.id in mentions
 
 def block_check():
     def predicate(ctx):
@@ -55,9 +61,9 @@ async def change_status(client):
 
 async def list_servers(client):
     await client.wait_until_ready()
-    while not client.is_closed:
+    while not client.is_closed():
         server_list = []
-        for server in client.servers:
+        for server in client.guilds:
             server_list.append(server.name)
         LOG.info('Current servers: {}'.format(server_list))
         await asyncio.sleep(600)

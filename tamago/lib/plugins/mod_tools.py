@@ -1,6 +1,7 @@
 import discord
 import logging
 from discord.ext import commands
+from tamago.lib import utils
 
 LOG = logging.getLogger(__name__)
 
@@ -11,12 +12,26 @@ class ModTools:
     @commands.command(pass_context=True)
     @commands.has_permissions(manage_messages=True, administrator=True)
     async def clear(self, ctx, amount=5):
+        """
+        Clears messages by !clear #ofmessages [@user]
+        :param class self: tamago bot client
+        :param context ctx: context of the message sent
+        """
         channel = ctx.message.channel
         messages = []
-        async for message in channel.history(limit=int(amount) + 1):
-            messages.append(message)
+        if ctx.message.mentions:
+            mentions = []
+            for member in ctx.message.mentions:
+                mentions.append(member.id)
+            async for message in channel.history(limit=int(amount) + 1):
+                if message.author.id in mentions:
+                    messages.append(message)
+        else:
+            async for message in channel.history(limit=int(amount) + 1):
+                messages.append(message)
+
         await channel.delete_messages(messages)
-        await ctx.send('%s messages purged' % amount)
+        await ctx.send('{} messages purged'.format(len(messages)))
 
     @commands.command(name='getid', aliases=['id'], pass_context=True)
     @commands.has_permissions(manage_messages=True, administrator=True)

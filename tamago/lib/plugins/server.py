@@ -26,6 +26,12 @@ class Server:
             msg = '{} the command you ran does not exist please use !help for assistance'.format(ctx.message.author.mention)
         if isinstance(error, commands.CheckFailure):
             msg = ':octagonal_sign: you do not have permission to run this command, {}'.format(ctx.message.author.mention)
+        if isinstance(error, commands.MissingRequiredArgument):
+            msg = 'Missing required argument: ```{}```'.format(error)
+
+        if not msg:
+            msg = 'Oh no, I have no idea what I am doing! {}'.format(error)
+
 
         await ctx.send('{}'.format(msg))
 
