@@ -10,7 +10,6 @@ from discord.ext import commands
 
 LOG = logging.getLogger(__name__)
 BLOCKED_USERS = os.getenv('BLOCKED_USERS') or '123456'
-GAMES = os.getenv('GAMES').split(",") or 'TamagoBot!'
 
 def parse_arguments():
     """parsing arguments.
@@ -52,12 +51,22 @@ def block_check():
 
 async def change_status(client):
     await client.wait_until_ready()
-    sts = cycle(GAMES)
 
-    while not client.is_closed():
-        current_status = next(sts)
-        await client.change_presence(status=discord.Status.idle, activity=Game(name=current_status))
-        await asyncio.sleep(30)
+    if os.environ.get('GAMES') is not None:
+        GAMES = os.environ.get('GAMES').split(",")
+        sts = cycle(GAMES)
+
+        while not client.is_closed():
+            current_status = next(sts)
+            await client.change_presence(status=discord.Status.idle, activity=Game(name=current_status))
+            await asyncio.sleep(10)
+    else:
+        while not client.is_closed():
+            guild_count = len(client.guilds)
+            current_status = 'Serving {} Discord servers!'.format(guild_count)
+            await client.change_presence(status=discord.Status.idle, activity=Game(name=current_status))
+            await asyncio.sleep(60)
+
 
 async def list_servers(client):
     await client.wait_until_ready()
