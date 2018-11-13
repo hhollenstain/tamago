@@ -17,15 +17,15 @@ from tamago.lib import plugin, utils
 from tamago.tamago import Tamago
 
 EXTENSIONS = [
-          'crypto',
-          'fun',
-          'mod_tools',
-          'music',
-          'ping',
-          'server',
-          'stats_overwatch',
-          'weather',
-          ]
+    'crypto',
+    'fun',
+    'mod_tools',
+    'music',
+    'ping',
+    'server',
+    'stats_overwatch',
+    'weather',
+    ]
 
 LOG = logging.getLogger(__name__)
 
