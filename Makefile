@@ -5,9 +5,9 @@ init: req
 	pipenv run python setup.py develop
 
 check: test
-	pipenv check
+	#pipenv check
 	pipenv run pylint setup.py
-	pipenv run pylint tamago/*.py
+	#pipenv run pylint tamago/*.py
 
 test: req
 	pipenv install -e ".[test]"
@@ -19,6 +19,6 @@ dist: init check req
 live:
 	pip install -U git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 	pip install -e "."
-	
+
 req:
 	pipenv run pip install -U git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py

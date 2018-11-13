@@ -14,6 +14,7 @@ INSTALL_REQUIREMENTS = [
     'pyowm',
     'python-overwatch',
     'pyyaml',
+    'requests==2.19.1',
     'youtube_dl'
 ]
 
@@ -25,8 +26,7 @@ TEST_REQUIREMENTS = {
         ]
     }
 
-DEPENDENCY_LINKS= [
-    #'https://github.com/Rapptz/discord.py/tarball/rewrite#egg=discord.py-1.0.0.dev',
+DEPENDENCY_LINKS = [
     'git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py==1.0.0',
 ]
 
