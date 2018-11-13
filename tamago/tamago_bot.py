@@ -22,6 +22,7 @@ EXTENSIONS = [
           'mod_tools',
           'music',
           'ping',
+          'pressf',
           'server',
           'stats_overwatch',
           'weather',

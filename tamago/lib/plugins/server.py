@@ -18,22 +18,22 @@ class Server:
         self.client.loop.create_task(utils.change_status(self.client))
         self.client.loop.create_task(utils.list_servers(self.client))
 
-    async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.CommandInvokeError):
-            LOG.error(error)
-            msg = '{} Error running the command'.format(ctx.message.author.mention)
-        if isinstance(error, commands.CommandNotFound):
-            msg = '{} the command you ran does not exist please use !help for assistance'.format(ctx.message.author.mention)
-        if isinstance(error, commands.CheckFailure):
-            msg = ':octagonal_sign: you do not have permission to run this command, {}'.format(ctx.message.author.mention)
-        if isinstance(error, commands.MissingRequiredArgument):
-            msg = 'Missing required argument: ```{}```'.format(error)
-
-        if not msg:
-            msg = 'Oh no, I have no idea what I am doing! {}'.format(error)
-
-
-        await ctx.send('{}'.format(msg))
+    # async def on_command_error(self, ctx, error):
+    #     if isinstance(error, commands.CommandInvokeError):
+    #         LOG.error(error)
+    #         msg = '{} Error running the command'.format(ctx.message.author.mention)
+    #     if isinstance(error, commands.CommandNotFound):
+    #         msg = '{} the command you ran does not exist please use !help for assistance'.format(ctx.message.author.mention)
+    #     if isinstance(error, commands.CheckFailure):
+    #         msg = ':octagonal_sign: you do not have permission to run this command, {}'.format(ctx.message.author.mention)
+    #     if isinstance(error, commands.MissingRequiredArgument):
+    #         msg = 'Missing required argument: ```{}```'.format(error)
+    #
+    #     if not msg:
+    #         msg = 'Oh no, I have no idea what I am doing! {}'.format(error)
+    #
+    #
+    #     await ctx.send('{}'.format(msg))
 
     @commands.command()
     async def tamago(self, ctx):
