@@ -4,7 +4,7 @@ from discord.ext import commands
 
 LOG = logging.getLogger(__name__)
 
-class Help:
+class Help(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.client.remove_command('help')

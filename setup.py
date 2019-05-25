@@ -8,6 +8,7 @@ INSTALL_REQUIREMENTS = [
     'asyncio',
     'aiomeasures',
     'coloredlogs',
+    'discord.py==1.1.1',
     'over_stats',
     'oyaml',
     'pip==18.0',
@@ -26,10 +27,6 @@ TEST_REQUIREMENTS = {
         'sure',
         ]
     }
-
-DEPENDENCY_LINKS = [
-    'git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py==1.0.0',
-]
 
 setup(
     name='tamago',

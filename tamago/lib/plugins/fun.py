@@ -6,7 +6,7 @@ from tamago.lib import utils
 
 LOG = logging.getLogger(__name__)
 
-class Fun:
+class Fun(commands.Cog):
     def __init__(self, tamago):
         self.tamago = tamago
 

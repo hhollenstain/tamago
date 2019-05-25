@@ -8,7 +8,7 @@ from tamago.lib import utils
 
 LOG = logging.getLogger(__name__)
 
-class Server:
+class Server(commands.Cog):
     def __init__(self, client):
         self.client = client
 
