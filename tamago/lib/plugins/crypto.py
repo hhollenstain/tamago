@@ -7,7 +7,7 @@ from tamago.lib import utils
 
 LOG = logging.getLogger(__name__)
 
-class Crypto:
+class Crypto(commands.Cog):
     def __init__(self, client):
         self.client = client
 

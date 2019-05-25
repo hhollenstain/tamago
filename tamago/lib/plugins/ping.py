@@ -5,7 +5,13 @@ from tamago.lib  import utils
 
 LOG = logging.getLogger(__name__)
 
-class Ping:
+
+# class Greetings(commands.Cog):
+#     def __init__(self, bot):
+#         self.bot = bot
+#         self._last_member = None
+
+class Ping(commands.Cog):
     def __init__(self, client):
         self.client = client
 

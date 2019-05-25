@@ -5,7 +5,7 @@ from tamago.lib import utils
 
 LOG = logging.getLogger(__name__)
 
-class ModTools:
+class ModTools(commands.Cog):
     def __init__(self, client):
         self.client = client
 

@@ -63,7 +63,7 @@ def get_weather(location, owm_api_key):
 
     return weather
 
-class Weather:
+class Weather(commands.Cog):
     def __init__(self, tamago):
         self.tamago = tamago
 
