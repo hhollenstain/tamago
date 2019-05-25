@@ -32,6 +32,7 @@ LOG = logging.getLogger(__name__)
 BOT_PREFIX = ("?", "!")
 DD_AGENT_URL = os.getenv('DD_AGENT_URL')
 OWM_API_KEY = os.getenv('OWM_API_KEY') or '123456'
+APEX_API_KEY = os.getenv('OWM_API_KEY') or None
 REDIS_URL = os.getenv('REDIS_URL')
 SHARD = os.getenv('SHARD') or 0
 SHARD_COUNT = os.getenv('SHARD_COUNT') or 1

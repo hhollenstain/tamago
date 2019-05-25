@@ -5,6 +5,7 @@ from setuptools import setup, find_packages
 import tamago
 
 INSTALL_REQUIREMENTS = [
+    'apex-legends==0.1.3',
     'asyncio',
     'aiomeasures',
     'coloredlogs',
