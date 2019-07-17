@@ -7,6 +7,7 @@ import tamago
 INSTALL_REQUIREMENTS = [
     'asyncio',
     'aiomeasures',
+    'bs4',
     'coloredlogs',
     'discord.py==1.1.1',
     'over_stats',
