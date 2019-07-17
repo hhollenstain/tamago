@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "404cdedd82fc78bb5c13905bde51260a5f302c05fba8fbf3ca33d55605a48a30"
+            "sha256": "25d247f6fcb675e89bb4d9e52a910694cb03ea88ee4eb347ff701fef4e8107de"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -515,9 +515,6 @@
         },
         "tamago": {
             "editable": true,
-            "extras": [
-                "test"
-            ],
             "path": "."
         },
         "tqdm": {
@@ -628,10 +625,10 @@
         },
         "youtube-dl": {
             "hashes": [
-                "sha256:13d37c6b4ef6d6f2190b70d6ac2e29e4d5f69e6036cf2afeda60825aa13a1a18",
-                "sha256:fe196b46a0d763c3bbe62bb689188a2c252a28788e48aed0e8d9c0e68af50a61"
+                "sha256:67d98193a55de04ea4aa5a2974c2c0039d15c318b11cbdc7d47d5a3b4f3a9204",
+                "sha256:867651dbfc0cefd19bfa0750ce97c43e8436b2de414675d3211615840d6833ca"
             ],
-            "version": "==2019.7.14"
+            "version": "==2019.7.16"
         },
         "zipp": {
             "hashes": [

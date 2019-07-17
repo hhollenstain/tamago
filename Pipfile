@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 e1839a8 = {path = ".",extras = ["test"],editable = true}
-tamago = {path = ".",extras = ["test"],editable = true}
+tamago = {path = ".",editable = true}
 
 [requires]
 python_version = "3.6"

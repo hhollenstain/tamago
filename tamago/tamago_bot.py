@@ -2,6 +2,7 @@
 """
 Tamago BOT LIVES!
 """
+import aiohttp
 import asyncio
 import random
 import os
@@ -22,6 +23,7 @@ EXTENSIONS = [
     'mod_tools',
     'music',
     'ping',
+    'pubg',
     'server',
     'stats_overwatch',
     'weather',
@@ -62,6 +64,7 @@ def main():
     for extension in EXTENSIONS:
         plugin.load('tamago.lib.plugins.{}'.format(extension), tamago)
 
+    tamago.aiohttp = aiohttp.ClientSession(loop=tamago.loop)
     tamago.run(TOKEN)
 
 if __name__ == '__main__':

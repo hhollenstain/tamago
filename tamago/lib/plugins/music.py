@@ -247,6 +247,7 @@ class Music(commands.Cog):
             try:
                 channel = ctx.author.voice.channel
             except AttributeError:
+                await ctx.send('No channel to join. Please either specify a valid channel or join one.')
                 raise InvalidVoiceChannel('No channel to join. Please either specify a valid channel or join one.')
 
         vc = ctx.voice_client
