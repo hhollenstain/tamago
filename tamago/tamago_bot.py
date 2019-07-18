@@ -18,8 +18,10 @@ from tamago.lib import plugin, utils
 from tamago.tamago import Tamago
 
 EXTENSIONS = [
+    'apex',
     'crypto',
     'fun',
+    'meme',
     'mod_tools',
     'music',
     'ping',
@@ -34,6 +36,7 @@ LOG = logging.getLogger(__name__)
 BOT_PREFIX = ("?", "!")
 DD_AGENT_URL = os.getenv('DD_AGENT_URL')
 OWM_API_KEY = os.getenv('OWM_API_KEY') or '123456'
+APEX_API_KEY = os.getenv('APEX_API_KEY') or None
 REDIS_URL = os.getenv('REDIS_URL')
 SHARD = os.getenv('SHARD') or 0
 SHARD_COUNT = os.getenv('SHARD_COUNT') or 1
@@ -59,7 +62,8 @@ def main():
 
     LOG.info("LONG LIVE TAMAGO")
     tamago = Tamago(shard_id=int(SHARD), shard_count=int(SHARD_COUNT), redis_url=REDIS_URL,
-                    dd_agent_url=DD_AGENT_URL, owm_api_key=OWM_API_KEY, command_prefix=BOT_PREFIX)
+                    dd_agent_url=DD_AGENT_URL, owm_api_key=OWM_API_KEY, command_prefix=BOT_PREFIX,
+                    apex_api_key=APEX_API_KEY)
 
     for extension in EXTENSIONS:
         plugin.load('tamago.lib.plugins.{}'.format(extension), tamago)

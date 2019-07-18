@@ -20,6 +20,7 @@ class Tamago(discord.ext.commands.Bot):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.apex_api_key = kwargs.get('apex_api_key')
         self.dd_agent_url = kwargs.get('dd_agent_url')
         self.owm_api_key = kwargs.get('owm_api_key')
         self.stats = DDAgent(self.dd_agent_url)

@@ -1,6 +1,6 @@
+import asyncio
 import discord
 from discord.ext import commands
-import asyncio
 from bs4 import BeautifulSoup as soup
 from tamago.lib.pyson import Pyson
 
