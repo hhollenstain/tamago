@@ -49,6 +49,7 @@ LEGENDS = [
 
 
 def rank_lookup(value, ranges):
+    value = utils.to_int(value)
     left, right = 0, len(ranges)
     while left != right - 1:
         mid = left + (right - left) // 2

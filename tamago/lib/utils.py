@@ -11,6 +11,16 @@ from discord.ext import commands
 LOG = logging.getLogger(__name__)
 BLOCKED_USERS = os.getenv('BLOCKED_USERS') or '123456'
 
+
+
+
+def to_int(value):
+    if isinstance(value, str):
+        return int(value.replace(",", ""))
+    else:
+        return value
+
+
 def parse_arguments():
     """parsing arguments.
 
