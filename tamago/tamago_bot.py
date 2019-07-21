@@ -33,6 +33,7 @@ EXTENSIONS = [
 
 LOG = logging.getLogger(__name__)
 
+APP_ID = os.getenv('APP_ID') or 'fakeid'
 BOT_PREFIX = ("?", "!")
 DD_AGENT_URL = os.getenv('DD_AGENT_URL')
 OWM_API_KEY = os.getenv('OWM_API_KEY') or '123456'
@@ -63,7 +64,7 @@ def main():
     LOG.info("LONG LIVE TAMAGO")
     tamago = Tamago(shard_id=int(SHARD), shard_count=int(SHARD_COUNT), redis_url=REDIS_URL,
                     dd_agent_url=DD_AGENT_URL, owm_api_key=OWM_API_KEY, command_prefix=BOT_PREFIX,
-                    apex_api_key=APEX_API_KEY)
+                    apex_api_key=APEX_API_KEY, app_id=APP_ID)
 
     for extension in EXTENSIONS:
         plugin.load('tamago.lib.plugins.{}'.format(extension), tamago)
