@@ -9,14 +9,14 @@ from tamago.lib import utils
 LOG = logging.getLogger(__name__)
 
 class Server(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, tamago):
+        self.tamago = tamago
 
     async def on_ready(self):
-        await self.client.change_presence(status=discord.Status.idle, activity=Game(name='Waking up, making coffee...'))
-        LOG.info('Logged in as {}'.format(self.client.user.name))
-        self.client.loop.create_task(utils.change_status(self.client))
-        self.client.loop.create_task(utils.list_servers(self.client))
+        await self.tamago.change_presence(status=discord.Status.idle, activity=Game(name='Waking up, making coffee...'))
+        LOG.info('Logged in as {}'.format(self.tamago.user.name))
+        self.tamago.loop.create_task(utils.change_status(self.tamago))
+        self.tamago.loop.create_task(utils.list_servers(self.tamago))
 
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandInvokeError):
@@ -53,10 +53,10 @@ class Server(commands.Cog):
 
         embed.set_author(name='Benidct Tamago')
         embed.set_thumbnail(url=random.choice(tamago_avatar))
-        embed.add_field(name='description', value='Bot is a WIP, have fun! Use !help for commands', inline=True)
+        embed.add_field(name='description', value=f'Tamago is a WIP, add Tamago to your server! [add me]( https://discordapp.com/oauth2/authorize?client_id={self.tamago.app_id}&scope=bot)', inline=True)
         embed.add_field(name='Version', value=VERSION, inline=True)
 
         await ctx.send(embed=embed)
 
-def setup(client):
-    client.add_cog(Server(client))
+def setup(tamago):
+    tamago.add_cog(Server(tamago))

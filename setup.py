@@ -6,6 +6,7 @@ import tamago
 
 INSTALL_REQUIREMENTS = [
     'asyncio',
+    'apex-legends==0.1.5',
     'aiomeasures',
     'bs4',
     'coloredlogs',
@@ -17,7 +18,7 @@ INSTALL_REQUIREMENTS = [
     'pyowm==2.9.0',
     'python-overwatch',
     'pyyaml',
-    'requests==2.19.1',
+    'requests==2.21.0',
     'youtube_dl'
 ]
 
