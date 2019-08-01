@@ -10,6 +10,8 @@ from functools import partial
 from youtube_dl import YoutubeDL
 from tamago.lib  import utils
 
+LOG = logging.getLogger(__name__)
+
 ytdlopts = {
     'format': 'bestaudio/best',
     'outtmpl': 'downloads/%(extractor)s-%(id)s-%(title)s.%(ext)s',
@@ -169,11 +171,11 @@ class MusicPlayer:
             source.cleanup()
             self.current = None
 
-            try:
-                # We are no longer playing this song...
-                await self.np.delete()
-            except discord.HTTPException:
-                pass
+            # try:
+            #     # We are no longer playing this song...
+            #     await self.np.delete()
+            # except discord.HTTPException:
+            #     pass
 
     def destroy(self, guild):
         """Disconnect and cleanup the player."""
@@ -355,11 +357,10 @@ class Music(commands.Cog):
             return await ctx.send('There are currently no more queued songs.')
 
         # Grab up to 5 entries from the queue...
-        upcoming = list(itertools.islice(player.queue._queue, 0, 5))
+        upcoming = list(itertools.islice(player.queue._queue, 0, 20))
 
         fmt = '\n'.join(f'**`{_["title"]}`**' for _ in upcoming)
         embed = discord.Embed(title=f'Upcoming - Next {len(upcoming)}', description=fmt)
-
         await ctx.send(embed=embed)
 
     @commands.command(name='now_playing', aliases=['np', 'current', 'currentsong', 'playing'])
