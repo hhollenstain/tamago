@@ -38,7 +38,7 @@ USD = "usd"
 USD_FOIL = "usd_foil"
 
 
-class Card:
+class Card(commands.Cog):
 
     @staticmethod
     def price(*args):
