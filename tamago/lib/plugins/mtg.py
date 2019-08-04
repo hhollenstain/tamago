@@ -69,7 +69,7 @@ class Card(commands.Cog):
         elif info[0] == "price":
             info = self.price(info[1])
 
-        await return ctx.send(info)
+        await ctx.send(info)
 
 
 
