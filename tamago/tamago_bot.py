@@ -23,6 +23,7 @@ EXTENSIONS = [
     'fun',
     'meme',
     'mod_tools',
+    'mtg',
     'music',
     'ping',
     'pubg',
