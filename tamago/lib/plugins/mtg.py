@@ -39,6 +39,8 @@ USD_FOIL = "usd_foil"
 
 
 class Card(commands.Cog):
+    def __init__(self, tamago):
+        self.tamago = tamago
 
     @staticmethod
     def price(*args):
@@ -67,7 +69,7 @@ class Card(commands.Cog):
         elif info[0] == "price":
             info = self.price(info[1])
 
-        return ctx.send(info)
+        await return ctx.send(info)
 
 
 
@@ -185,5 +187,5 @@ class Card(commands.Cog):
     def __print_card_search(response, card_layout):
         print(Card.__get_card_description(response, card_layout) + NEW_LINE)
 
-    def setup(tamago):
-        tamago.add_cog(Card(tamago))
+def setup(tamago):
+    tamago.add_cog(Card(tamago))
