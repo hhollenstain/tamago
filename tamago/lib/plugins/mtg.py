@@ -166,10 +166,10 @@ class Card(commands.Cog):
 
     @staticmethod
     def __print_card_price(response):
+        strReturn=[]
         for set_name, card_prices_usd in Card.__get_card_set_names(response).items():
 
             print(TAB + set_name)
-
             if not card_prices_usd[0] is None:
                 normal_price = card_prices_usd[0]
             else:
@@ -181,8 +181,11 @@ class Card(commands.Cog):
                 foil_price = NOT_AVAILABLE
 
             #print(TAB + TAB + DOLLAR_SIGN + normal_price + SPACE + FORWARD_SLASH + SPACE + DOLLAR_SIGN + foil_price)
-            return f" {set_name} \n  {DOLLAR_SIGN}{normal_price} {FORWARD_SLASH} {DOLLAR_SIGN} {foil_price}"
+            #return f" {set_name} \n  {DOLLAR_SIGN}{normal_price} {FORWARD_SLASH} {DOLLAR_SIGN} {foil_price}"
+            strReturn.append(f" {set_name} {DOLLAR_SIGN}{normal_price} {FORWARD_SLASH} {DOLLAR_SIGN} {foil_price} {NEW_LINE}")
 
+        return strReturn
+     
     @staticmethod
     def __print_card_search(response, card_layout):
         print(Card.__get_card_description(response, card_layout) + NEW_LINE)
