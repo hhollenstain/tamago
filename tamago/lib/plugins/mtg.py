@@ -85,7 +85,7 @@ class Card(commands.Cog):
         efsn = []
         efp = []
         for card in cards:
-            if i % 5 == 0:
+            if 5 % i == 0:
                 embed.add_field(name=f'\u200b', value=f'{efsn[0]}{NEW_LINE}{efsn[1]}{NEW_LINE}'
                                                       f'{efsn[2]}{NEW_LINE}{efsn[3]}{NEW_LINE}'
                                                       f'{efsn[4]}', inline=True)
