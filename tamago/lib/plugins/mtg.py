@@ -81,7 +81,6 @@ class Card(commands.Cog):
        # embed.add_field(name=f'Normal', inline=True)
        # embed.add_field(name=f'Foil', inline=True)
 
-        bool isFirst = true
         i=1
         efsn=[]
         efp=[]
