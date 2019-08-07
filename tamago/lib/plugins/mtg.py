@@ -49,7 +49,8 @@ class Card(commands.Cog):
         response = requests.get(FUZZY_SEARCH % plus_delimited_card_name)
         card_layout = Card.__get_card_layout(response)
 
-        return f'{Card.__print_card_header(response, card_layout)} {Card.__print_card_price(response)}'
+        #return f'{Card.__print_card_header(response, card_layout)} {Card.__print_card_price(response)}'
+        return Card.__print_card_price(response)
 
     @staticmethod
     def search(*args):
@@ -64,14 +65,24 @@ class Card(commands.Cog):
     async def mtg(self, ctx, *, info: str = ''):
         info = info.lower().split(" ", 1)
 
+        cards = {}
+
         if info[0] == "search":
             info = self.search(info[1])
         elif info[0] == "price":
-            info = self.price(info[1])
+            cards = self.price(info[1])
+
+        embed = discord.Embed(
+            title=f'MTG Prices  Normal/Foil',
+            colour=discord.Colour.purple()
+        )
+
+        for card in cards:
+            embed.add_field(name=f'Set Name', value=f'{cards[card]["set_name"]}', inline=False)
 
        # embed = discord.Embed()
 
-        await ctx.send(info)
+        await ctx.send(embed=embed)
 
 
 
@@ -168,25 +179,35 @@ class Card(commands.Cog):
 
     @staticmethod
     def __print_card_price(response):
-        strReturn=[]
+       #strReturn=[]
+        prices = {}
+        i = 0
         for set_name, card_prices_usd in Card.__get_card_set_names(response).items():
-
-            print(TAB + set_name)
+            prices[i] = prices.get(i,{})
+            prices[i]['set_name'] = set_name
+            #print(TAB + set_name)
             if not card_prices_usd[0] is None:
-                normal_price = card_prices_usd[0]
+                #normal_price = card_prices_usd[0]
+                prices[i]['normal_price'] = card_prices_usd[0]
             else:
-                normal_price = NOT_AVAILABLE
+                prices[i]['normal_price'] = NOT_AVAILABLE
+                #normal_price = NOT_AVAILABLE
 
             if not card_prices_usd[1] is None:
-                foil_price = card_prices_usd[1]
+                #foil_price = card_prices_usd[1]
+                prices[i]['foil_price'] = card_prices_usd[0]
             else:
-                foil_price = NOT_AVAILABLE
+                #foil_price = NOT_AVAILABLE
+                prices[i]['foil_price'] = NOT_AVAILABLE
+
+            i += i
+
 
             #print(TAB + TAB + DOLLAR_SIGN + normal_price + SPACE + FORWARD_SLASH + SPACE + DOLLAR_SIGN + foil_price)
             #return f" {set_name} \n  {DOLLAR_SIGN}{normal_price} {FORWARD_SLASH} {DOLLAR_SIGN} {foil_price}"
-            strReturn.append(f" {set_name} {DOLLAR_SIGN}{normal_price} {FORWARD_SLASH} {DOLLAR_SIGN} {foil_price} {NEW_LINE}")
+            #strReturn.append(f" {set_name} {DOLLAR_SIGN}{normal_price} {FORWARD_SLASH} {DOLLAR_SIGN} {foil_price} {NEW_LINE}")
 
-        return strReturn
+        return prices
      
     @staticmethod
     def __print_card_search(response, card_layout):
