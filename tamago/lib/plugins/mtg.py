@@ -94,9 +94,9 @@ class Card(commands.Cog):
                 efsn = []
                 efp =[]
             else:
-                efsn.append(f'{cards[card]["set_name"]}{NEW_LINE}')
+                efsn.append(f'{cards[card]["set_name"]}\n')
                 efp.append(f'{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
-                           f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}{NEW_LINE}')
+                           f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}\n')
                 i += 1
             #embed.add_field(name=f'\u200b', value=f'{cards[card]["set_name"]}', inline=True)
             #embed.add_field(name=f'\u200b', value=f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
