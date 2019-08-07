@@ -81,12 +81,32 @@ class Card(commands.Cog):
        # embed.add_field(name=f'Normal', inline=True)
        # embed.add_field(name=f'Foil', inline=True)
 
+        bool isFirst = true
+        i=1
+        efsn=[]
+        efp=[]
         for card in cards:
-            embed.add_field(name=f'\u200b', value=f'{cards[card]["set_name"]}', inline=True)
-            embed.add_field(name=f'\u200b', value=f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
-                                                  f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}',
-                            inline=True)
-            embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
+            if i % 5 == 0:
+                embed.add_field(name=f'\u200b', value=f'{efsn[0]}{NEW_LINE}{efsn[2]}{NEW_LINE}'
+                                                      f'{efsn[3]}{NEW_LINE}{efsn[4]}{NEW_LINE}'
+                                                      f'{efsn[5]}', inline=True)
+                embed.add_field(name=f'\u200b', value=f'{efp[0]}{NEW_LINE}{efp[2]}{NEW_LINE}'
+                                                      f'{efp[3]}{NEW_LINE}{efp[4]}{NEW_LINE}'
+                                                      f'{efp[5]}', inline=True)
+                embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
+                i=1
+                efsn=[]
+                efp=[]
+            else:
+                efsn.append(cards[card]["set_name"])
+                efp.append(f'{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
+                                                  f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}')
+                i += 1
+            #embed.add_field(name=f'\u200b', value=f'{cards[card]["set_name"]}', inline=True)
+            #embed.add_field(name=f'\u200b', value=f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
+            #                                      f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}',
+            #    inline=True)
+            #embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
 
        # embed = discord.Embed()
 
@@ -221,6 +241,7 @@ class Card(commands.Cog):
     @staticmethod
     def __print_card_search(response, card_layout):
         return f"{Card.__get_card_description(response, card_layout)} {NEW_LINE}"
+
 
 def setup(tamago):
     tamago.add_cog(Card(tamago))
