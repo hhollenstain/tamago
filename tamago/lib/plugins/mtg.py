@@ -69,6 +69,8 @@ class Card(commands.Cog):
         elif info[0] == "price":
             info = self.price(info[1])
 
+       # embed = discord.Embed()
+
         await ctx.send(info)
 
 
@@ -188,7 +190,7 @@ class Card(commands.Cog):
      
     @staticmethod
     def __print_card_search(response, card_layout):
-        print(Card.__get_card_description(response, card_layout) + NEW_LINE)
+        return f"{Card.__get_card_description(response, card_layout)} {NEW_LINE}"
 
 def setup(tamago):
     tamago.add_cog(Card(tamago))
