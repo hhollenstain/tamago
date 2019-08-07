@@ -77,9 +77,9 @@ class Card(commands.Cog):
             colour=discord.Colour.purple()
         )
 
-        embed.add_field(name=f'Set Name', value=f'', inline=True)
-        embed.add_field(name=f'Normal', value=f'', inline=True)
-        embed.add_field(name=f'Foil', value=f'', inline=True)
+        embed.add_field(name=f'Set Name', inline=True)
+        embed.add_field(name=f'Normal', inline=True)
+        embed.add_field(name=f'Foil', inline=True)
 
         for card in cards:
             embed.add_field(name=f'', value=f'{cards[card]["set_name"]}', inline=False)
