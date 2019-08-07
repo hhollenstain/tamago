@@ -183,24 +183,25 @@ class Card(commands.Cog):
         prices = {}
         i = 0
         for set_name, card_prices_usd in Card.__get_card_set_names(response).items():
-            prices[i] = prices.get(i,{})
-            prices[i]['set_name'] = set_name
+            prices[set_name] = prices.get(set_name,{})
+            prices[set_name]['set_name'] = set_name
+           # prices[i]['set_name'] = set_name
             #print(TAB + set_name)
             if not card_prices_usd[0] is None:
                 #normal_price = card_prices_usd[0]
-                prices[i]['normal_price'] = card_prices_usd[0]
+                prices[set_name]['normal_price'] = card_prices_usd[0]
             else:
-                prices[i]['normal_price'] = NOT_AVAILABLE
+                prices[set_name]['normal_price'] = NOT_AVAILABLE
                 #normal_price = NOT_AVAILABLE
 
             if not card_prices_usd[1] is None:
                 #foil_price = card_prices_usd[1]
-                prices[i]['foil_price'] = card_prices_usd[0]
+                prices[set_name]['foil_price'] = card_prices_usd[0]
             else:
                 #foil_price = NOT_AVAILABLE
-                prices[i]['foil_price'] = NOT_AVAILABLE
+                prices[set_name]['foil_price'] = NOT_AVAILABLE
 
-            i += i
+            #i += i
 
 
             #print(TAB + TAB + DOLLAR_SIGN + normal_price + SPACE + FORWARD_SLASH + SPACE + DOLLAR_SIGN + foil_price)
