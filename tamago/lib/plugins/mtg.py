@@ -67,46 +67,54 @@ class Card(commands.Cog):
 
         cards = {}
 
+        embed = None
+
         if info[0] == "search":
-            info = self.search(info[1])
+            cards = self.search(info[1])
         elif info[0] == "price":
             cards = self.price(info[1])
 
-        embed = discord.Embed(
-            title=f'MTG Prices              Normal/Foil',
-            colour=discord.Colour.purple()
-        )
+            embed = discord.Embed(
+                title=f'MTG Prices              Normal/Foil',
+                colour=discord.Colour.purple()
+            )
 
-       # embed.add_field(name=f'Set Name', inline=True)
-       # embed.add_field(name=f'Normal', inline=True)
-       # embed.add_field(name=f'Foil', inline=True)
+            # embed.add_field(name=f'Set Name', inline=True)
+            # embed.add_field(name=f'Normal', inline=True)
+            # embed.add_field(name=f'Foil', inline=True)
 
-        i = 1
-        efsn = []
-        efp = []
-        for card in cards:
-            if i % 5 == 0:
+            i = 1
+            efsn = []
+            efp = []
+            for card in cards:
+                if i % 5 == 0:
 
+                    embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
+                    embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
+                    embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
+                    i = 1
+                    efsn = []
+                    efp = []
+                else:
+                    efsn.append(f'{cards[card]["set_name"]}\n')
+                    efp.append(f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
+                               f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}\n')
+                    i += 1
+                # embed.add_field(name=f'\u200b', value=f'{cards[card]["set_name"]}', inline=True)
+                # embed.add_field(name=f'\u200b', value=f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
+                #                                      f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}',
+                #    inline=True)
+                # embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
+
+            if efsn:
                 embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
                 embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
-                embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
-                i = 1
-                efsn = []
-                efp =[]
-            else:
-                efsn.append(f'{cards[card]["set_name"]}\n')
-                efp.append(f'{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
-                           f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}\n')
-                i += 1
-            #embed.add_field(name=f'\u200b', value=f'{cards[card]["set_name"]}', inline=True)
-            #embed.add_field(name=f'\u200b', value=f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
-            #                                      f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}',
-            #    inline=True)
-            #embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
 
-        if efsn:
-            embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
-            embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
+
+
+
+
+
 
 
        # embed = discord.Embed()
