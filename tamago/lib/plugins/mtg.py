@@ -233,7 +233,7 @@ class Card(commands.Cog):
 
             if not card_prices_usd[1] is None:
                 #foil_price = card_prices_usd[1]
-                prices[set_name]['foil_price'] = card_prices_usd[0]
+                prices[set_name]['foil_price'] = card_prices_usd[1]
             else:
                 #foil_price = NOT_AVAILABLE
                 prices[set_name]['foil_price'] = NOT_AVAILABLE
