@@ -78,7 +78,7 @@ class Card(commands.Cog):
         )
 
         for card in cards:
-            embed.add_field(name=f'Set Name', value=f'{cards[card]["set_name"]}', inline=False)
+            embed.add_field(name=f'Set Name', value=f'{cards[card]["set_name"]}', inline=True)
 
        # embed = discord.Embed()
 
