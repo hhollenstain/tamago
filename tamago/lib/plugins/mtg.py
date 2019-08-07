@@ -87,8 +87,8 @@ class Card(commands.Cog):
         for card in cards:
             if i % 5 == 0:
 
-                embed.add_field(name=f'\u200b', value=f'{efsn}', inline=True)
-                embed.add_field(name=f'\u200b', value=f'{efp}', inline=True)
+                embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
+                embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
                 embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
                 i = 1
                 efsn = []
