@@ -85,21 +85,18 @@ class Card(commands.Cog):
         efsn = []
         efp = []
         for card in cards:
-            if 5 % i == 0:
-                embed.add_field(name=f'\u200b', value=f'{efsn[0]}{NEW_LINE}{efsn[1]}{NEW_LINE}'
-                                                      f'{efsn[2]}{NEW_LINE}{efsn[3]}{NEW_LINE}'
-                                                      f'{efsn[4]}', inline=True)
-                embed.add_field(name=f'\u200b', value=f'{efp[0]}{NEW_LINE}{efp[1]}{NEW_LINE}'
-                                                      f'{efp[2]}{NEW_LINE}{efp[3]}{NEW_LINE}'
-                                                      f'{efp[4]}', inline=True)
+            if i % 5 == 0:
+
+                embed.add_field(name=f'\u200b', value=f'{efsn}', inline=True)
+                embed.add_field(name=f'\u200b', value=f'{efp}', inline=True)
                 embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
                 i = 1
                 efsn = []
                 efp =[]
             else:
-                efsn.append(cards[card]["set_name"])
+                efsn.append(f'{cards[card]["set_name"]}{NEW_LINE}')
                 efp.append(f'{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
-                                                  f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}')
+                           f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}{NEW_LINE}')
                 i += 1
             #embed.add_field(name=f'\u200b', value=f'{cards[card]["set_name"]}', inline=True)
             #embed.add_field(name=f'\u200b', value=f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
