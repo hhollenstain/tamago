@@ -104,6 +104,11 @@ class Card(commands.Cog):
             #    inline=True)
             #embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
 
+        if efsn:
+            embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
+            embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
+
+
        # embed = discord.Embed()
 
         await ctx.send(embed=embed)
