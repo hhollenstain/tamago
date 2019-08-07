@@ -73,7 +73,7 @@ class Card(commands.Cog):
             cards = self.price(info[1])
 
         embed = discord.Embed(
-            title=f'MTG Prices  Normal/Foil',
+            title=f'MTG Prices              Normal/Foil',
             colour=discord.Colour.purple()
         )
 
