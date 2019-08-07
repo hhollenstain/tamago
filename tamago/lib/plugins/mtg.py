@@ -83,7 +83,8 @@ class Card(commands.Cog):
 
         for card in cards:
             embed.add_field(name=f'', value=f'{cards[card]["set_name"]}', inline=False)
-            embed.add_field(name=f'', value=f'{cards[card]["normal_price"]}{FORWARD_SLASH}{cards[card]["foil_price"]}')
+            embed.add_field(name=f'', value=f'{cards[card]["normal_price"]}{FORWARD_SLASH}{cards[card]["foil_price"]}',
+                            inline=True)
 
        # embed = discord.Embed()
 
