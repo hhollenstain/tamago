@@ -70,7 +70,15 @@ class Card(commands.Cog):
         embed = None
 
         if info[0] == "search":
-            cards = self.search(info[1])
+            card_info = self.search(info[1])
+
+            embed = discord.Embed(
+                title=f'Card Searc',
+                colour=discord.Colour.dark_red()
+            )
+
+            embed.add_field(name=f'\u200b', value=card_info)
+
         elif info[0] == "price":
             cards = self.price(info[1])
 
@@ -249,7 +257,7 @@ class Card(commands.Cog):
      
     @staticmethod
     def __print_card_search(response, card_layout):
-        return f"{Card.__get_card_description(response, card_layout)} {NEW_LINE}"
+        return f'{Card.__get_card_description(response, card_layout)} {NEW_LINE}'
 
 
 def setup(tamago):
