@@ -65,18 +65,16 @@ class Card(commands.Cog):
     async def mtg(self, ctx, *, info: str = ''):
         info = info.lower().split(" ", 1)
 
-        cards = {}
-
         embed = None
 
         if info[0] == "search":
             card_info = self.search(info[1])
 
             embed = discord.Embed(
-                title=f'Card Searc',
+                title=f'\u200b',
                 colour=discord.Colour.dark_red()
+                url
             )
-
             embed.add_field(name=f'\u200b', value=card_info)
 
         elif info[0] == "price":
@@ -135,33 +133,36 @@ class Card(commands.Cog):
     def __get_card_description(response, card_layout):
         description = EMPTY_STRING
 
+        info = {}
+
         if card_layout == NORMAL or card_layout == MELD or card_layout == SAGA:
             if CREATURE in response.json()[TYPE_LINE]:
-                description = response.json()[TYPE_LINE] + NEW_LINE + NEW_LINE + \
-                              response.json()[ORACLE_TEXT] + NEW_LINE + NEW_LINE + \
-                              response.json()[POWER] + SPACE + FORWARD_SLASH + SPACE + response.json()[TOUGHNESS]
+                info['TYPE_LINE'] = response.json()[TYPE_LINE]
+                info['ORACLE_TEXT'] = response.json()[ORACLE_TEXT]
+                info['POWER_TOUGHNESS'] = response.json()[POWER] + SPACE + FORWARD_SLASH + SPACE + \
+                                          response.json()[TOUGHNESS]
             else:
-                description = response.json()[TYPE_LINE] + NEW_LINE + NEW_LINE + \
-                              response.json()[ORACLE_TEXT]
+                info['TYPE_LINE'] = response.json()[TYPE_LINE]
+                info['ORACLE_TEXT'] = response.json()[ORACLE_TEXT]
         elif card_layout == TRANSFORM or card_layout == SPLIT or card_layout == FLIP:
             if CREATURE in response.json()[TYPE_LINE]:
-                front_description = response.json()[CARD_FACES][0][TYPE_LINE] + NEW_LINE + NEW_LINE + \
-                                    response.json()[CARD_FACES][0][ORACLE_TEXT] + NEW_LINE + NEW_LINE + \
-                                    response.json()[CARD_FACES][0][POWER] + SPACE + FORWARD_SLASH + SPACE + \
+                info['TYPE_LINE'] = response.json()[CARD_FACES][0][TYPE_LINE]
+                info['ORACLE_TEXT'] = response.json()[CARD_FACES][0][ORACLE_TEXT]
+                info['POWER_TOUGHNESS'] = response.json()[CARD_FACES][0][POWER] + SPACE + FORWARD_SLASH + SPACE + \
                                     response.json()[CARD_FACES][0][TOUGHNESS]
-                back_description = response.json()[CARD_FACES][0][TYPE_LINE] + NEW_LINE + NEW_LINE + \
-                                   response.json()[CARD_FACES][1][ORACLE_TEXT] + NEW_LINE + NEW_LINE + \
-                                   response.json()[CARD_FACES][1][POWER] + SPACE + FORWARD_SLASH + SPACE + \
+                info['B_TYPE_LINE'] = response.json()[CARD_FACES][0][TYPE_LINE]
+                info['B_ORACLE_TEXT'] = response.json()[CARD_FACES][1][ORACLE_TEXT]
+                info['B_POWER_TOUGHNESS'] = response.json()[CARD_FACES][1][POWER] + SPACE + FORWARD_SLASH + SPACE + \
                                    response.json()[CARD_FACES][1][TOUGHNESS]
             else:
-                front_description = response.json()[CARD_FACES][0][TYPE_LINE] + NEW_LINE + NEW_LINE + \
-                                    response.json()[CARD_FACES][0][ORACLE_TEXT]
-                back_description = response.json()[CARD_FACES][1][TYPE_LINE] + NEW_LINE + NEW_LINE + \
-                                   response.json()[CARD_FACES][1][ORACLE_TEXT]
+                info['TYPE_LINE'] = response.json()[CARD_FACES][0][TYPE_LINE]
+                info['ORACLE_TEXT'] = response.json()[CARD_FACES][0][ORACLE_TEXT]
+                info['B_TYPE_LINE'] = response.json()[CARD_FACES][0][TYPE_LINE]
+                info['B_ORACLE_TEXT'] = response.json()[CARD_FACES][1][ORACLE_TEXT]
 
-            description = front_description + NEW_LINE + TRANSFORM_LINE_BREAK + NEW_LINE + back_description
 
-        return description
+
+        return info
 
     @staticmethod
     def __get_card_layout(response):
