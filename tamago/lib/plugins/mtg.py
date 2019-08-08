@@ -73,7 +73,6 @@ class Card(commands.Cog):
             embed = discord.Embed(
                 title=f'\u200b',
                 colour=discord.Colour.dark_red()
-                url
             )
             embed.add_field(name=f'\u200b', value=card_info)
 
