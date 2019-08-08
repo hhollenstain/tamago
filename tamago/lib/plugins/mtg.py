@@ -75,6 +75,7 @@ class Card(commands.Cog):
                 colour=discord.Colour.dark_red()
             )
             embed.add_field(name=f'\u200b', value=card_info)
+            await ctx.send(embed=embed)
 
         elif info[0] == "price":
             cards = self.price(info[1])
@@ -96,7 +97,8 @@ class Card(commands.Cog):
 
                     embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
                     embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
-                    embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
+                    #embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
+                    await ctx.send(embed=embed)
                     i = 1
                     efsn = []
                     efp = []
@@ -105,26 +107,15 @@ class Card(commands.Cog):
                     efp.append(f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
                                f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}\n')
                     i += 1
-                # embed.add_field(name=f'\u200b', value=f'{cards[card]["set_name"]}', inline=True)
-                # embed.add_field(name=f'\u200b', value=f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
-                #                                      f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}',
-                #    inline=True)
-                # embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
 
             if efsn:
                 embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
                 embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
+                await ctx.send(embed=embed)
 
 
 
 
-
-
-
-
-       # embed = discord.Embed()
-
-        await ctx.send(embed=embed)
 
 
 
