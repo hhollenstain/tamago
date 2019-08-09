@@ -89,28 +89,26 @@ class Card(commands.Cog):
             # embed.add_field(name=f'Normal', inline=True)
             # embed.add_field(name=f'Foil', inline=True)
 
-            i = 1
             efsn = []
             efp = []
             for card in cards:
-                if i % 5 == 0:
+
+                efsn.append(f'{cards[card]["set_name"]}\n')
+                efp.append(f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
+                           f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}\n')
+
+                if len(efsn) % 25 == 0:
 
                     embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
                     embed.add_field(name=f'\u200b', value='\n'.join(efp), inline=True)
                     #embed.add_field(name=f'\u200b', value=f'\u200b', inline=False)
                     await ctx.send(embed=embed)
-                    i = 1
                     embed = discord.Embed(
                         title=f'MTG Prices              Normal/Foil',
                         colour=discord.Colour.purple()
                     )
                     efsn = []
                     efp = []
-                else:
-                    efsn.append(f'{cards[card]["set_name"]}\n')
-                    efp.append(f'{DOLLAR_SIGN}{cards[card]["normal_price"]}{SPACE}{FORWARD_SLASH}'
-                               f'{SPACE}{DOLLAR_SIGN}{cards[card]["foil_price"]}\n')
-                    i += 1
 
             if efsn:
                 embed.add_field(name=f'\u200b', value='\n'.join(efsn), inline=True)
