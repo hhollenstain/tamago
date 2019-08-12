@@ -261,7 +261,7 @@ class Card(commands.Cog):
         embed = discord.Embed(
             title=f'Card Search',
             colour=discord.Colour.dark_red(),
-            url=card_search[NORMAL_IMAGE]
+            url=card_search['NORMAL_IMAGE']
         )
 
         return embed
