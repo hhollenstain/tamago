@@ -34,6 +34,8 @@ TOUGHNESS = "toughness"
 TRANSFORM = "transform"
 TRANSFORM_LINE_BREAK = "---------"
 TYPE_LINE = "type_line"
+IMAGE_URIS = "image_uris"
+NORMAL_IMAGE = "normal"
 USD = "usd"
 USD_FOIL = "usd_foil"
 
@@ -59,7 +61,8 @@ class Card(commands.Cog):
         response = requests.get(FUZZY_SEARCH % plus_delimited_card_name)
         card_layout = Card.__get_card_layout(response)
 
-        return f'{Card.__print_card_header(response, card_layout)} {Card.__print_card_search(response, card_layout)}'
+       # return f'{Card.__print_card_header(response, card_layout)} {Card.__print_card_search(response, card_layout)}'
+        return Card.__print_card_search(response, card_layout)
 
     @commands.command()
     async def mtg(self, ctx, *, info: str = ''):
@@ -70,12 +73,14 @@ class Card(commands.Cog):
         if info[0] == "search":
             card_info = self.search(info[1])
 
-            embed = discord.Embed(
-                title=f'\u200b',
-                colour=discord.Colour.dark_red()
-            )
-            embed.add_field(name=f'\u200b', value=card_info)
-            await ctx.send(embed=embed)
+           # embed = discord.Embed(
+           #     title=f'\u200b',
+           #     colour=discord.Colour.dark_red()
+           # )
+           # embed.add_field(name=f'\u200b', value=card_info)
+
+          #  await ctx.send(embed=embed)
+            await ctx.send(embed=card_info)
 
         elif info[0] == "price":
             cards = self.price(info[1])
@@ -152,7 +157,7 @@ class Card(commands.Cog):
                 info['B_TYPE_LINE'] = response.json()[CARD_FACES][0][TYPE_LINE]
                 info['B_ORACLE_TEXT'] = response.json()[CARD_FACES][1][ORACLE_TEXT]
 
-
+        info['NORMAL_IMAGE'] = response.json()[IMAGE_URIS][NORMAL_IMAGE]
 
         return info
 
@@ -250,7 +255,16 @@ class Card(commands.Cog):
      
     @staticmethod
     def __print_card_search(response, card_layout):
-        return f'{Card.__get_card_description(response, card_layout)} {NEW_LINE}'
+
+        card_search = Card.__get_card_description(response, card_layout)
+
+        embed = discord.Embed(
+            title=f'Card Search',
+            colour=discord.Colour.dark_red(),
+            url=card_search[NORMAL_IMAGE]
+        )
+
+        return embed
 
 
 def setup(tamago):
