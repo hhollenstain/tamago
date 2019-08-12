@@ -80,6 +80,9 @@ class Card(commands.Cog):
            # embed.add_field(name=f'\u200b', value=card_info)
 
           #  await ctx.send(embed=embed)
+
+            await ctx.send(card_info['NORMAL_IMAGE'])
+
             await ctx.send(embed=card_info)
 
         elif info[0] == "price":
@@ -258,13 +261,7 @@ class Card(commands.Cog):
 
         card_search = Card.__get_card_description(response, card_layout)
 
-        embed = discord.Embed(
-            title=f'Card Search',
-            colour=discord.Colour.dark_red(),
-            url=card_search['NORMAL_IMAGE']
-        )
-
-        return embed
+        return card_search
 
 
 def setup(tamago):
