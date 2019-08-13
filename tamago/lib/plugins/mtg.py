@@ -83,7 +83,7 @@ class Card(commands.Cog):
 
             await ctx.send(card_info['NORMAL_IMAGE'])
 
-            await ctx.send(embed=card_info)
+            await ctx.send(card_info)
 
         elif info[0] == "price":
             cards = self.price(info[1])
