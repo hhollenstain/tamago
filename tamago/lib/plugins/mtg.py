@@ -259,9 +259,7 @@ class Card(commands.Cog):
     @staticmethod
     def __print_card_search(response, card_layout):
 
-        card_search = Card.__get_card_description(response, card_layout)
-
-        return card_search
+        return Card.__get_card_description(response, card_layout)
 
 
 def setup(tamago):
