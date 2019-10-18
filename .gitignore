@@ -10,6 +10,7 @@ dist/
 develop-eggs/
 eggs/
 .eggs/
+.vscode/
 *.egg-info/
 *.egg
 .env
