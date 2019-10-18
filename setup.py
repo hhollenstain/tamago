@@ -10,7 +10,7 @@ INSTALL_REQUIREMENTS = [
     'aiomeasures',
     'bs4',
     'coloredlogs',
-    'discord.py==1.1.1',
+    # 'discord.py==1.1.1',
     'over_stats',
     'oyaml',
     'pip==18.0',

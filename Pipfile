@@ -6,9 +6,10 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-e1839a8 = {path = ".",extras = ["test"],editable = true}
+e1839a8 = {path = ".", editable = true}
 tamago = {path = ".",editable = true}
 apex-legends = "*"
+"discord.py" = {git = "https://github.com/Rapptz/discord.py", ref = "master"}
 
 [requires]
 python_version = "3.6"
