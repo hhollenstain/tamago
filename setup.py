@@ -5,12 +5,13 @@ from setuptools import setup, find_packages
 import tamago
 
 INSTALL_REQUIREMENTS = [
+    'aiohttp==3.5.4',
     'asyncio',
     'apex-legends==0.1.5',
     'aiomeasures',
     'bs4',
     'coloredlogs',
-    # 'discord.py==1.1.1',
+    'discord.py==1.2.5',
     'over_stats',
     'oyaml',
     'pip==18.0',
